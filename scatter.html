@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- styles -->
+	<link href="assets/css/bootstrap.css" rel="stylesheet">
+	<link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="assets/css/styles.css" rel="stylesheet">
+</head>
+
+<body>
+	<!-- Navbar -->
+	<div class="navbar navbar-inverse navbar-static-top">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">Weatherly D3pression</a>
+			<ul class="nav">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						Maps
+						<b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="choropleth.html">Choropleth</a></li>
+						<li><a href="symbol.html">Symbol</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						TwitterSphere
+						<b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="#">Scatter</a></li>
+						<li><a href="tweets.html">Tweets</a></li>
+						<li><a href="metrics.html">Metrics</a></li>
+					</ul>
+				</li>
+				<li><a href="screencast.html">Screencast</a></li>
+				<li><a href="about.html">About</a></li>
+			</ul>
+		</div>
+	</div>
+	
+	<!-- tweet subbar -->
+	<div class="row subBar">
+		<div class="span2">
+			<h2>Scatter</h2>
+		</div>
+		<div id="scatterTweetBar" class="span10"></div>
+	</div>
+	
+	<!-- svg container -->
+	<div class="row">
+		<div id="scatterContainer"></div>
+	</div>
+
+	<!-- controls and filters -->
+	<div id="scatterFilter" class="row">
+		<div class="span2 offset1">
+			<p>Temperature:</p>
+			<div class="btn-group">
+				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+					Temperature
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a>All Temperatures</a></li>
+					<li><a>0 - 20 degrees</a></li>
+					<li><a>20 - 40 degrees</a></li>
+					<li><a>40 - 60 degrees</a></li>
+					<li><a>60 - 80 degrees</a></li>
+					<li><a>80 - 100 degrees</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="span2">
+			<p>Weather:</p>
+			<button class="btn btn-primary" type="button">All</button>
+			<button class="btn" type="button">Sunny</button>
+			<button class="btn" type="button">Cloudy</button>
+			<button class="btn" type="button">Rainy</button>
+			<button class="btn" type="button">Snowy</button>
+		</div>
+		<div class="span2">
+			<p>Location:</p>
+			<div class="btn-group">
+				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+					City
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu">
+				</ul>
+			</div>
+		</div>
+		<div class="span2">
+			<p>Gender:</p>
+			<button class="btn btn-primary" type="button">All</button>
+			<button class="btn" type="button">Male</button>
+			<button class="btn" type="button">Female</button>
+		</div>
+		<div class="span2">
+			<p>Date:</p>
+			<button class="btn btn-primary" type="button">All</button>
+			<button class="btn tool-info" type="button"title="April 2, 2013">Day 1</button>
+			<button class="btn tool-info" type="button" title="April 3, 2013">Day 2</button>
+			<button class="btn tool-info" type="button" title="April 4, 2013">Day 3</button>
+			<button class="btn tool-info " type="button" title="April 5, 2013">Day 4</button>
+		</div>
+		<div class="span2">
+			<p>Sentiment:</p>
+			<button class="btn btn-primary" type="button">All</button>
+			<button class="btn tool-info" type="button" title="Overwhelming Negative ((-20)-(-10))"><img src="http://iibh.apphb.com/Content/images/scores/5.png" /></button>
+			<button class="btn tool-info" type="button" title="Generally Negative ((-10)-(-0))"><img src="http://iibh.apphb.com/Content/images/scores/4.png" /></button>
+			<button class="btn tool-info" type="button" title="Neutral (0)"><img src="http://iibh.apphb.com/Content/images/scores/3.png" /></button>
+			<button class="btn tool-info" type="button" title="Generally Positive (0-10)"><img src="http://iibh.apphb.com/Content/images/scores/2.png" /></button>
+			<button class="btn tool-info" type="button" title="Overwhelmingly Positive (10-20)"><img src="http://iibh.apphb.com/Content/images/scores/1.png" /></button>
+		</div>
+	</div>
+
+	<!-- javascript -->
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
+	<script src="assets/js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- styles -->
+	<link href="assets/css/bootstrap.css" rel="stylesheet">
+	<link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="assets/css/styles.css" rel="stylesheet">
+</head>
+
+<body>
+	<!-- Navbar -->
+	<div class="navbar navbar-inverse navbar-static-top">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">Weatherly D3pression</a>
+			<ul class="nav">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						Maps
+						<b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="choropleth.html">Choropleth</a></li>
+						<li><a href="symbol.html">Symbol</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						TwitterSphere
+						<b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="scatter.html">Scatter</a></li>
+						<li><a href="tweets.html">Tweets</a></li>
+						<li><a href="#">Metrics</a></li>
+					</ul>
+				</li>
+				<li><a href="screencast.html">Screencast</a></li>
+				<li><a href="about.html">About</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<!-- Subbar -->
+	<div class="row subBar">
+		<div class="span2">
+			<h2>Metrics</h2>
+		</div>
+		<div class="span10 pillNavBar">
+			<ul class="nav nav-pills">
+				<li class="active">
+					<a href="#sentiment-container" data-toggle="pill">Sentiment</a>
+				</li>
+				<li><a href="#weather-container" data-toggle="pill">Weather</a></li>
+				<li><a href="#location-container" data-toggle="pill">Location</a></li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="tab-content">
+		<!-- Sentiment Container -->
+		<div class="tab-pane active" id="sentiment-container">sentiment</div>
+	
+		<!-- Weather Container --> 
+		<div class="tab-pane" id="weather-container">weather</div>
+		
+		<!-- Location Container -->	
+		<div class="tab-pane" id="location-container">location</div>
+	
+	</div>
+
+	<!-- javascript -->
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
+	<script src="assets/js/main.js"></script>
+</body>
+
+</html>
