@@ -54,8 +54,8 @@
 	</div>
 
 	<!-- controls and filters -->
-	<div id="scatterFilter" class="row">
-		<div class="span2" style="padding-left: 15px">
+	<div id="scatterFilter" class="row well well-large">
+		<div class="span2" style="padding-left: 30px">
 			<p>Temperature:</p>
 			<div class="btn-group">
 				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -75,15 +75,15 @@
 		<div class="span2">
 			<p>Weather:</p>
 			<button class="btn btn-primary" type="button">All</button>
-			<button class="btn" type="button">Sunny</button>
-			<button class="btn" type="button">Cloudy</button>
-			<button class="btn" type="button">Rainy</button>
-			<button class="btn" type="button">Snowy</button>
-			<button class="btn" type="button">Windy</button>
+			<button class="btn tool-info" type="button">Sunny</button>
+			<button class="btn tool-info" type="button">Foggy</button>
+			<button class="btn tool-info" type="button">Rainy</button>
+			<button class="btn tool-info" type="button">Snowy</button>
+			<button class="btn tool-info" title="Windspeed over 20 knots" type="button">Windy</button>
 		</div>
 		<div class="span3">
 			<p>Location:</p>
-			<input id="scatter-type" class="typeahead" type="text" autocomplete="off" data-provide="typeahead" />
+			<input id="scatter-type" placeholder="Search by city..." class="typeahead" type="text" autocomplete="off" data-provide="typeahead" />
 		</div>
 		<div class="span2">
 			<p>Gender:</p>
@@ -94,7 +94,7 @@
 		<div class="span2">
 			<p>Date:</p>
 			<button class="btn btn-primary" type="button">All</button>
-			<button class="btn tool-info" type="button"title="April 2, 2013">Day 1</button>
+			<button class="btn tool-info" type="button" title="April 2, 2013">Day 1</button>
 			<button class="btn tool-info" type="button" title="April 3, 2013">Day 2</button>
 			<button class="btn tool-info" type="button" title="April 4, 2013">Day 3</button>
 			<button class="btn tool-info " type="button" title="April 5, 2013">Day 4</button>
@@ -112,6 +112,7 @@
 
 	<!-- javascript -->
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
 	<script src="assets/js/bootstrap.min.js"></script>
 	<script src="assets/js/main.js"></script>
 </body>
