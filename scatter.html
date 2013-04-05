@@ -54,8 +54,8 @@
 	</div>
 
 	<!-- controls and filters -->
-	<div id="scatterFilter" class="row">
-		<div class="span2 offset1">
+	<div id="scatterFilter" class="row well well-large">
+		<div class="span2" style="padding-left: 30px">
 			<p>Temperature:</p>
 			<div class="btn-group">
 				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -75,21 +75,15 @@
 		<div class="span2">
 			<p>Weather:</p>
 			<button class="btn btn-primary" type="button">All</button>
-			<button class="btn" type="button">Sunny</button>
-			<button class="btn" type="button">Cloudy</button>
-			<button class="btn" type="button">Rainy</button>
-			<button class="btn" type="button">Snowy</button>
+			<button class="btn tool-info" type="button">Sunny</button>
+			<button class="btn tool-info" type="button">Foggy</button>
+			<button class="btn tool-info" type="button">Rainy</button>
+			<button class="btn tool-info" type="button">Snowy</button>
+			<button class="btn tool-info" title="Windspeed over 20 knots" type="button">Windy</button>
 		</div>
-		<div class="span2">
+		<div class="span3">
 			<p>Location:</p>
-			<div class="btn-group">
-				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-					City
-					<span class="caret"></span>
-				</a>
-				<ul class="dropdown-menu">
-				</ul>
-			</div>
+			<input id="scatter-type" placeholder="Search by city..." class="typeahead" type="text" autocomplete="off" data-provide="typeahead" />
 		</div>
 		<div class="span2">
 			<p>Gender:</p>
@@ -100,7 +94,7 @@
 		<div class="span2">
 			<p>Date:</p>
 			<button class="btn btn-primary" type="button">All</button>
-			<button class="btn tool-info" type="button"title="April 2, 2013">Day 1</button>
+			<button class="btn tool-info" type="button" title="April 2, 2013">Day 1</button>
 			<button class="btn tool-info" type="button" title="April 3, 2013">Day 2</button>
 			<button class="btn tool-info" type="button" title="April 4, 2013">Day 3</button>
 			<button class="btn tool-info " type="button" title="April 5, 2013">Day 4</button>
@@ -108,16 +102,17 @@
 		<div class="span2">
 			<p>Sentiment:</p>
 			<button class="btn btn-primary" type="button">All</button>
-			<button class="btn tool-info" type="button" title="Overwhelming Negative ((-20)-(-10))"><img src="http://iibh.apphb.com/Content/images/scores/5.png" /></button>
-			<button class="btn tool-info" type="button" title="Generally Negative ((-10)-(-0))"><img src="http://iibh.apphb.com/Content/images/scores/4.png" /></button>
+			<button class="btn tool-info" type="button" title="Overwhelming Negative ((20)-(10))"><img src="http://iibh.apphb.com/Content/images/scores/5.png" /></button>
+			<button class="btn tool-info" type="button" title="Generally Negative ((9)-(1))"><img src="http://iibh.apphb.com/Content/images/scores/4.png" /></button>
 			<button class="btn tool-info" type="button" title="Neutral (0)"><img src="http://iibh.apphb.com/Content/images/scores/3.png" /></button>
-			<button class="btn tool-info" type="button" title="Generally Positive (0-10)"><img src="http://iibh.apphb.com/Content/images/scores/2.png" /></button>
-			<button class="btn tool-info" type="button" title="Overwhelmingly Positive (10-20)"><img src="http://iibh.apphb.com/Content/images/scores/1.png" /></button>
+			<button class="btn tool-info" type="button" title="Generally Positive (1-10)"><img src="http://iibh.apphb.com/Content/images/scores/2.png" /></button>
+			<button class="btn tool-info" type="button" title="Overwhelmingly Positive (11-20)"><img src="http://iibh.apphb.com/Content/images/scores/1.png" /></button>
 		</div>
 	</div>
 
 	<!-- javascript -->
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
 	<script src="assets/js/bootstrap.min.js"></script>
 	<script src="assets/js/main.js"></script>
 </body>
