@@ -1,0 +1,56 @@
+/* metrics map stylings */
+mapBackground {
+	fill: none;
+	pointer-events: all; 
+	color: white;
+}
+
+#states {
+	fill: #999999;
+	stroke: #fff;
+	stroke-width: 1.5px;
+}
+
+#states .active {
+	fill: orange;
+}
+
+/* arc stylings */
+.arc path {
+	stroke: $fff;
+}
+
+/* bar graph stylings */
+.axis path,
+.axis line {
+	fill: none;
+	stroke: #000;
+	shape-rendering: crispEdges;
+}
+
+.bar {
+	fill: steelblue;
+}
+
+.x.axis path {
+	display: none;
+}
+
+
+/* symbol map stylings */
+#states path, #state-centroids circle {
+	fill: #ccc;
+	stroke: #fff;
+	stroke-width: 1.0px;
+}
+
+#state-centroids circle {
+  fill: steelblue;
+  fill-opacity: .8;
+}
+
+/* choropleth map */
+#choropleth-counties path {
+  stroke: #fff;
+  stroke-width: .25px;
+}

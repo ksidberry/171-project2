@@ -8,32 +8,33 @@ window.onload = function() {
 	buildSymbol();
 	buildScatter();
 	buildMetrics();
+	buildCloud();
 }
 
 function buildChoropleth() {
 
-var svg = d3.select("#choroplethContainer")
-  .append("svg:svg")
-    //.call(d3.behavior.zoom()
-    //.on("zoom", redraw))
-  .append("svg:g");
+	var svg = d3.select("#choroplethContainer")
+	  .append("svg:svg")
+		//.call(d3.behavior.zoom()
+		//.on("zoom", redraw))
+	  .append("svg:g");
 
-var counties = svg.append("svg:g")
-    .attr("id", "choropleth-counties");
+	var counties = svg.append("svg:g")
+		.attr("id", "choropleth-counties");
 
-var path = d3.geo.path();
+	var path = d3.geo.path();
 
-var fill = d3.scale.log()
-    .domain([10, 500])
-    .range(["purple", "steelblue"]);
+	var fill = d3.scale.log()
+		.domain([10, 500])
+		.range(["purple", "steelblue"]);
 
-d3.json("data/counties.json", function(json) {
-  counties.selectAll("path")
-      .data(json.features)
-    .enter().append("svg:path")
-      .attr("d", path)
-      .attr("fill", function(d) { return fill(path.area(d)); });
-});
+	d3.json("data/counties.json", function(json) {
+	  counties.selectAll("path")
+		  .data(json.features)
+		.enter().append("svg:path")
+		  .attr("d", path)
+		  .attr("fill", function(d) { return fill(path.area(d)); });
+	});
 
 /*function redraw() {
   svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
@@ -120,19 +121,39 @@ function buildScatter() {
 
 }
 
-function buildTweets() {
-	var svg = d3.select("#scatterContainer").append("svg:svg")
-		.attr("width", width)
-		.attr("height", height);
-	
-	/*var g = svg.selectAll("g")
-		.data(data)
-	.enter().append("g")
-		.attr()*/
-	
-	var circle = svg.selectAll("circle");
-	
-	//circle.attr("")
+function buildCloud() {
+	var fill = d3.scale.category20();
+
+  d3.layout.cloud().size([width, height])
+      .words([
+        "Hello", "world", "normally", "you", "want", "more", "words",
+        "than", "this"].map(function(d) {
+        return {text: d, size: 10 + Math.random() * 90};
+      }))
+      .rotate(function() { return ~~(Math.random() * 2) * 90; })
+      .font("Impact")
+      .fontSize(function(d) { return d.size; })
+      .on("end", draw)
+      .start();
+
+  function draw(words) {
+    d3.select("#cloudContainer").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+      .append("g")
+        .attr("transform", "translate(150,150)")
+      .selectAll("text")
+        .data(words)
+      .enter().append("text")
+        .style("font-size", function(d) { return d.size + "px"; })
+        .style("font-family", "Impact")
+        .style("fill", function(d, i) { return fill(i); })
+        .attr("text-anchor", "middle")
+        .attr("transform", function(d) {
+          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+        })
+        .text(function(d) { return d.text; });
+  }
 
 }
 
