@@ -13,7 +13,7 @@ window.onload = function() {
 
 function buildChoropleth() {
 
-	var svg = d3.select("#choroplethContainer")
+	/*var svg = d3.select("#choroplethContainer")
 	  .append("svg:svg")
 		//.call(d3.behavior.zoom()
 		//.on("zoom", redraw))
@@ -34,7 +34,7 @@ function buildChoropleth() {
 		.enter().append("svg:path")
 		  .attr("d", path)
 		  .attr("fill", function(d) { return fill(path.area(d)); });
-	});
+	});*/
 
 /*function redraw() {
   svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
