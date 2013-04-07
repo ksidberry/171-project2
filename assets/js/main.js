@@ -19,7 +19,7 @@ var svg = d3.select("#choroplethContainer")
   .append("svg:g");
 
 var counties = svg.append("svg:g")
-    .attr("id", "counties");
+    .attr("id", "choropleth-counties");
 
 var path = d3.geo.path();
 
@@ -120,7 +120,21 @@ function buildScatter() {
 
 }
 
-function buildTweets() {}
+function buildTweets() {
+	var svg = d3.select("#scatterContainer").append("svg:svg")
+		.attr("width", width)
+		.attr("height", height);
+	
+	/*var g = svg.selectAll("g")
+		.data(data)
+	.enter().append("g")
+		.attr()*/
+	
+	var circle = svg.selectAll("circle");
+	
+	//circle.attr("")
+
+}
 
 function buildMetrics() {
 	addBarChart();
