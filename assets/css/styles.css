@@ -21,7 +21,7 @@ mapBackground {
 }
 
 /* bar graph stylings */
-.axis path,
+/*.axis path,
 .axis line {
 	fill: none;
 	stroke: #000;
@@ -34,7 +34,7 @@ mapBackground {
 
 .x.axis path {
 	display: none;
-}
+}*/
 
 
 /* symbol map stylings */
@@ -55,3 +55,24 @@ mapBackground {
   stroke-width: .25px;
 }
 */
+
+/* histogram */
+rect {
+  fill: steelblue;
+  stroke: white;
+}
+
+.bar text {
+  fill: #fff;
+}
+
+/*line {
+  stroke: black;
+  shape-rendering: crispEdges;
+}*/
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}

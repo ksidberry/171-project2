@@ -3,14 +3,46 @@ height = 500;
 var counter = 0;
 var temps = [];
 
+// put all the ajax at the beginnign and distribute to the functions
+// reorganize the navigation for the fewer visualizations
+
 window.onload = function() {	
+	// process data
+	var bars = [],
+		bubbles = [];
+	$.ajax({
+		url: "data/final/TuesdayDataTiny.json",
+		dataType: 'json',
+		async: false,
+		success: function(data) {
+			for (var i = 0; i < data.length; i++) {
+				var sentiment = data[i]["salience.content.sentiment"];
+				bars.push(sentiment);
+				
+				var longi = data[i]["interaction.geo.longitude"];
+				var lat = data[i]["interaction.geo.latitude"];
+				var radius = data[i]["klout.score"];
+				var screenName = data[i]["twitter.user.screen_name"];
+				var text = data[i]["interaction.content"];
+				var location = data[i]["twitter.place.full_name"];
+				var temp = data[i]["TuesdayTemp"];
+				var fillKey = "USA";
+				//"salience.content.sentiment"
+			
+				var n = new mapObject(longi, lat, radius, screenName, text, location, temp, fillKey)
+				bubbles = bubbles.concat(n);
+			}
+		}
+	});
+	
 	// activate tooltips
 	$('.tool-info').tooltip();
-	buildChoropleth();
-	//buildSymbol();
+	
 	buildScatter();
-	buildMetrics();
-	//buildCloud();
+	buildBarChart(bars);
+	buildMapChart(bubbles);
+	buildPie();
+	buildCloud();
 }
 
 function getTweets() {
@@ -80,7 +112,7 @@ function getAllTweets() {
     return tweetwords;
 }
 
-function buildChoropleth() {
+/*function buildChoropleth() {
 $.getJSON('data/tweets_with_temperature/TuesdayData.json', function(data) {
 
 var map = new Map({
@@ -114,9 +146,9 @@ var map = new Map({
    map.render();
 
 });
-}
+}*/
 
-function buildSymbol () {
+/*function buildSymbol () {
 	// The radius scale for the centroids.
 	var r = d3.scale.sqrt()
     	.domain([0, 1e6])
@@ -155,7 +187,7 @@ function buildSymbol () {
       		.attr("r", function(d) { return r(d.properties.population); });
 	});
 	
-}
+}*/
 
 function buildScatter() {
 	var tweets = getAllTweets();
@@ -308,9 +340,7 @@ function buildCloud() {
 
 }
 
-function buildMetrics() {
-	//addBarChart();
-	addMapChart();
+function buildPie() {
 	
 	// fog, snow, rain, wind, sun, unknown
 	var count = [0, 0, 0, 0, 0, 0];	
@@ -383,110 +413,64 @@ function buildMetrics() {
 
 }
 
-function addBarChart(){
-	/*var data = [],
-		tier1 = 0,
-		tier2 = 0
-		tier3 = 0
-		tier4 = 0; 
-	
-	$.getJSON("data/centroid.json", function(data) {
-		$.each(data, function(key, val){
-			
-		});
-	});*/
-	
-	// build sentiment bar chart
-	var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    	w = width - margin.left - margin.right,
-    	h = height - margin.top - margin.bottom
+function buildBarChart(values){
+	var margin = {top: 10, right: 30, bottom: 30, left: 30},
+		w = width - margin.left - margin.right,
+		h = height - margin.top - margin.bottom;
 
-	//var formatPercent = d3.format(".0%");
+	var x = d3.scale.linear()
+		.domain([-20, 20])
+		.range([0, w]);
 
-	var x = d3.scale.ordinal()
-    	.rangeRoundBands([0, w], .1);
+	// Generate a histogram using twenty uniformly-spaced bins.
+	var data = d3.layout.histogram()
+		.bins(x.ticks(10))
+		(values);
 
 	var y = d3.scale.linear()
+		.domain([0, d3.max(data, function(d) { return d.y; })])
 		.range([h, 0]);
 
 	var xAxis = d3.svg.axis()
 		.scale(x)
 		.orient("bottom");
 
-	var yAxis = d3.svg.axis()
-		.scale(y)
-		.orient("left")
-		//.tickFormat(formatPercent);
-
 	var svg = d3.select("#sentiment-container").append("svg")
 		.attr("width", w + margin.left + margin.right)
 		.attr("height", h + margin.top + margin.bottom)
-	.append("g")
+	  .append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-	d3.tsv("data/bar_sample.csv", function(error, data) {
-		data.forEach(function(d) {
-    	d.frequency = +d.frequency;
-  	});
+	var bar = svg.selectAll(".bar")
+		.data(data)
+	  .enter().append("g")
+		.attr("class", "bar")
+		.attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
 
-  	x.domain(data.map(function(d) { return d.letter; }));
-  	y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
+	bar.append("rect")
+		.attr("x", 1)
+		.attr("width", 142.5)
+		.attr("height", function(d) { return h - y(d.y); });
+		//console.log(data);
+		//x(data[0].dx) - 1
 
-  	svg.append("g")
-    	.attr("class", "x axis")
-    	.attr("transform", "translate(0," + h + ")")
-      	.call(xAxis);
+	bar.append("text")
+		.attr("dy", ".75em")
+		.attr("y", 6)
+		.attr("x", 142.5 / 2)
+		.attr("text-anchor", "middle")
+		.text(function(d) { return d.y;});
 
 	svg.append("g")
-    	.attr("class", "y axis")
-      	.call(yAxis)
-	.append("text")
-    	.attr("transform", "rotate(-90)")
-    	.attr("y", 6)
-		.attr("dy", ".71em")
-		.style("text-anchor", "end")
-		.text("Frequency");
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + h + ")")
+		.call(xAxis);
 
-	svg.selectAll(".bar")
-		.data(data)
-	.enter().append("rect")
-		.attr("class", "bar")
-		.attr("x", function(d) { return x(d.letter); })
-		.attr("width", x.rangeBand())
-		.attr("y", function(d) { return y(d.frequency); })
-		.attr("height", function(d) { return h - y(d.frequency); });
-
-	});
 }
 
-function addMapChart(){	
-	// handle data
-	var tweets = [];
-	 $.ajax({
-      url: "data/final/TuesdayDataTiny.json",
-      dataType: 'json',
-      async: false,
-      success: function(data) {
-    	for (var i = 0; i < data.length; i++) {
-    		var longi = data[i]["interaction.geo.longitude"];
-    		var lat = data[i]["interaction.geo.latitude"];
-    		var radius = data[i]["klout.score"];
-    		var screenName = data[i]["twitter.user.screen_name"];
-    		var text = data[i]["interaction.content"];
-    		var location = data[i]["twitter.place.full_name"];
-    		var temp = data[i]["TuesdayTemp"];
-    		var fillKey = "USA";
-    		//"salience.content.sentiment"
-    		
-    		var n = new mapObject(longi, lat, radius, screenName, text, location, temp, fillKey)
-    		tweets = tweets.concat(n);
-    	}	
-
-      }
-    });
-	
+function buildMapChart(tweets){		
 	// build location map chart
-	$("#map-box").datamap({
+	$("#test").datamap({
         scope: 'usa',
     	bubbles: tweets,
         bubble_config: {
