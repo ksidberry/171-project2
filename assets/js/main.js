@@ -5,7 +5,7 @@ window.onload = function() {
 	// activate tooltips
 	$('.tool-info').tooltip();
 	//buildChoropleth();
-	buildSymbol();
+	//buildSymbol();
 	buildScatter();
 	buildMetrics();
 	//buildCloud();
@@ -199,36 +199,37 @@ function buildMetrics() {
 	//addMapChart();
 	
 	// process data
-	var data = new Array,
+	var data = new Array;
 	// fog, snow, rain, wind, sun
 	var count = [0, 0, 0, 0, 0];	
 	
 	var sequence = {
 		"fog": {
 			"color": "#999999",
-			"id" = "#foggy-donut",
+			"id": "#foggy-donut",
 		},
 		"snow": {
 			"color": "#999999",
-			"id" = "#snowy-donut",
+			"id": "#snowy-donut",
 		},
 		"rain": {
 			"color": "#999999",
-			"id" = "#rainy-donut",
+			"id": "#rainy-donut",
 		},
 		"wind": {
 			"color": "#999999",
-			"id" = "#windy-donut",
+			"id": "#windy-donut",
 		},
 		"sun": {
 			"color": "#999999",
-			"id" = "#sunny-donut",
+			"id": "#sunny-donut",
 		}
 	}
 		
-	$.getJSON("data/.json", function(data) {
+	$.getJSON("data/final/TuesdayDataTiny.json", function(data) {
 		$.each(data, function(key, val){
-			if (){
+			console.log(data[key]);
+			/*if (){
 				count[0] = count[0] + 1;
 			}
 			else if (){
@@ -242,10 +243,10 @@ function buildMetrics() {
 			}
 			else {
 				count[4] = count[4] + 1;
-			}
+			}*/
 		});
 	});
-	var total = count[0] + count[1] + count[2] + count[3] + count[4];
+	/*var total = count[0] + count[1] + count[2] + count[3] + count[4];
 	
 	var i = 0;
 	for (var key in sequence){
@@ -253,16 +254,10 @@ function buildMetrics() {
 		var everyone = new pieOjbect("everyone", total - count[i]);
 		data.push(weather);
 		data.push(everyone)
-		addDonut(data, sequence[key].color, sequence[key].id);
+		addDonut(data, sequence[key]["color"], sequence[key]["id"]);
 		i = i + 1;
-	}
-	
-	/*addDonut("#sunny-donut");
-	addDonut("#foggy-donut");
-	addDonut("#rainy-donut");
-	addDonut("#snowy-donut");
-	addDonut("#windy-donut");*/
-	//addDonut("#unknown-donut");
+	}*/
+
 }
 
 function addBarChart(){
