@@ -48,7 +48,7 @@ function getTweets() {
     var tweet;
     var tweetwords = [];
     $.ajax({
-      url: "data/final/WednesdayData.json",
+      url: "data/final/TuesdayDataSmall.json",
       dataType: 'json',
       async: false,
       success: function(data) {
@@ -87,11 +87,12 @@ function getAllTweets() {
       async: false,
       success: function(data) {
         var arraylength = data.length;
-        for (var i = 0; i < 25; i++) {
+        console.log(data.length);
+        for (var i = 0; i < 30; i++) {
            var randomnumber=Math.floor(Math.random()*(arraylength + 1)); 
            //console.log(randomnumber);
-           //console.log(data);
-            var text = data[i]["TuesdayTemp"];
+           console.log(data[i]["salience.content.sentiment"]);
+            var text = data[i]["salience.content.sentiment"];
             //console.log(text);
             //var n=text.split(" ");
             //console.log(n);
@@ -103,7 +104,7 @@ function getAllTweets() {
         //tweetwords = ['hi'];
         //console.log(data);
         // data is a JavaScript object now. Handle it as such
-        //console.log(tweetwords);
+        console.log(tweetwords);
         return tweetwords;
 
       }
@@ -189,18 +190,19 @@ var map = new Map({
 }*/
 
 function buildScatter() {
-	var tweets = getAllTweets();
+	//var tweets = getAllTweets();
     $.ajax({
-      url: "data/final/TuesdayDataTiny.json",
+      url: "data/final/WednesdayData.json",
       dataType: 'json',
       async: false,
       success: function(data) {
         //console.log(data.length);
         var arraylength = data.length;
-        for (var i = 0; i < 140; i++) {
+        //console.log(data[0]);
+        for (var i = 0; i < data.length; i++) {
            //var randomnumber=Math.floor(Math.random()*(arraylength + 1)); 
            
-            //console.log(randomnumber);
+            //console.log(data[i]["sentiment"]);
            //console.log(data);
             //var text = data[randomnumber]["twitter.text"];
             //console.log(text);
@@ -208,10 +210,10 @@ function buildScatter() {
             //console.log(n);
             //console.log(tweetwords.length);
             //console.log(i);
-            temps = temps.concat(data[i]["TuesdayTemp"]);
+            temps = temps.concat(data[i]);
 
         }
-        //console.log(tweetwords);
+        //console.log(temps);
         //tweetwords = ['hi'];
         //console.log(data);
         // data is a JavaScript object now. Handle it as such
@@ -226,18 +228,42 @@ function buildScatter() {
 		.attr("width", width)
 		.attr("height", height);
 
+    function tweetText() {
+       counter = counter + 1;
+      return temps[counter]["text"];
+
+    }
+
+    function temp() {
+       counter = counter + 1;
+       //console.log(counter);
+       return temps[counter - 1]["WednesdayTemp"];
+
+    }
+
+
     function color() {
-      if (counter > 140) {
-        counter = 0;
+       counter = counter + 1;
+      console.log(counter);
+      var negative = "#ff7480";
+      var positive = "#4a83ff";
+      var neutral = "#808080";
+
+      console.log("HI");
+      //console.log(temps[counter]["sentiment"]);
+      if (temps[counter]["sentiment"] < 0) {
+        //counter = counter + 1;
+        return negative;
       }
-      if (temps[counter] < 30) {
-        counter = counter + 1;
-        return "steelblue";
+      else if (temps[counter]["sentiment"] > 0) {
+        //counter = counter + 1;
+        return positive;
       }
       else {
-        counter = counter + 1;
-        return "yellow";
+        //counter = counter + 1;
+        return neutral;
       }
+
       /*
         if (counter % 7 == 0) {
             counter = counter + 1;
@@ -248,38 +274,19 @@ function buildScatter() {
             return "yellow";
         }*/
     }
-    if (tweets[counter] < 50) {
-       // console.log("test");
-    	var circle = svg.selectAll("circle")
-    		.data(d3.range(1000).map(function() {
-    		return {
-    			x: width * Math.random(),
-    			y: height * Math.random(),
-    			dx: Math.random() - .5,
-    			dy: Math.random() - .5,
-                fill: color()
-    			};
-    		}))
-    		.enter().append("svg:circle")
-    		.attr("r", 2.5)
-    }
 
-    else {
-            var circle = svg.selectAll("circle")
-            .data(d3.range(1000).map(function() {
-            return {
-                x: width * Math.random(),
-                y: height * Math.random(),
-                dx: Math.random() - .5,
-                dy: Math.random() - .5
-                };
-            }))
-            .enter().append("svg:circle")
-            .attr("r", 2.5)
-            .style("fill", color());
+  var circle = svg.selectAll("circle")
+  .data(d3.range(597).map(function() {
+  return {
+      x: width * Math.random(),
+      y: height * Math.random(),
+      dx: Math.random() - .5,
+      dy: Math.random() - .5
+      };
+  }))
+  .enter().append("svg:circle")
+  .attr("r", 7.5);
 
-
-    }
 	var text = svg.append("svg:text")
 		.attr("x", 20)
 		.attr("y", 20);
@@ -287,10 +294,31 @@ function buildScatter() {
 	var start = Date.now(),
 		frames = 0;
 
-    circle
-        .style("fill", function(d) { return color(); });
-    ;
+    var tooltip = d3.select("body")
+  .append("div")
+  .attr("id", "tooltip")
+  .style("position", "absolute")
+  .style("z-index", "10")
+  .style("visibility", "hidden")
+  .text("a simple tooltip");
 
+
+
+    circle
+        .style("fill", function(d) { return color(); })
+        .attr("text", function(d) {return tweetText();})
+        .attr("temperature", function(d) {return temp();})
+        .on("mouseover", function(){d3.select("#tooltip").html(function(d) { return "Temperature: " + temp() + "<br />Tweet: " + tweetText(); }); return tooltip.style("visibility", "visible"); })
+        .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+        .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+
+/*
+    for (item in d3.selectAll("circle")[0]) {
+      if (item.attr("temperature") < 50) {
+        item.style("opacity", 0);
+      }
+    }
+*/
 	d3.timer(function() {
 
 	// Update the FPS meter.
