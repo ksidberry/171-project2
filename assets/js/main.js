@@ -6,7 +6,7 @@ var temps = [];
 window.onload = function() {	
 	// activate tooltips
 	$('.tool-info').tooltip();
-	//buildChoropleth();
+	buildChoropleth();
 	//buildSymbol();
 	buildScatter();
 	buildMetrics();
@@ -38,8 +38,8 @@ function getTweets() {
         //tweetwords = ['hi'];
         //console.log(data);
         // data is a JavaScript object now. Handle it as such
-        console.log("hi");
-        console.log(tweetwords);
+        //console.log("hi");
+        //console.log(tweetwords);
         return tweetwords;
 
       }
@@ -72,7 +72,7 @@ function getAllTweets() {
         //tweetwords = ['hi'];
         //console.log(data);
         // data is a JavaScript object now. Handle it as such
-        console.log(tweetwords);
+        //console.log(tweetwords);
         return tweetwords;
 
       }
@@ -80,11 +80,9 @@ function getAllTweets() {
     return tweetwords;
 }
 
-
 function buildChoropleth() {
 $.getJSON('data/tweets_with_temperature/TuesdayData.json', function(data) {
 
-console.log("hi");
 var map = new Map({
       scope: 'usa',
       el: $('#choroplethContainer'),
@@ -166,7 +164,7 @@ function buildScatter() {
       dataType: 'json',
       async: false,
       success: function(data) {
-        console.log(data.length);
+        //console.log(data.length);
         var arraylength = data.length;
         for (var i = 0; i < 140; i++) {
            //var randomnumber=Math.floor(Math.random()*(arraylength + 1)); 
@@ -178,7 +176,7 @@ function buildScatter() {
             //var n=text.split(" ");
             //console.log(n);
             //console.log(tweetwords.length);
-            console.log(i);
+            //console.log(i);
             temps = temps.concat(data[i]["TuesdayTemp"]);
 
         }
@@ -220,7 +218,7 @@ function buildScatter() {
         }*/
     }
     if (tweets[counter] < 50) {
-        console.log("test");
+       // console.log("test");
     	var circle = svg.selectAll("circle")
     		.data(d3.range(1000).map(function() {
     		return {
@@ -312,12 +310,10 @@ function buildCloud() {
 
 function buildMetrics() {
 	//addBarChart();
-	//addMapChart();
+	addMapChart();
 	
-	// process data
-	var data = new Array;
-	// fog, snow, rain, wind, sun
-	var count = [0, 0, 0, 0, 0];	
+	// fog, snow, rain, wind, sun, unknown
+	var count = [0, 0, 0, 0, 0, 0];	
 	
 	var sequence = {
 		"fog": {
@@ -339,40 +335,51 @@ function buildMetrics() {
 		"sun": {
 			"color": "#999999",
 			"id": "#sunny-donut",
+		},
+		"unknown": {
+			"color": "#999999",
+			"id": "#unknown-donut"
 		}
 	}
 		
 	$.getJSON("data/final/TuesdayDataTiny.json", function(data) {
 		$.each(data, function(key, val){
-			console.log(data[key]);
-			/*if (){
+			//console.log(data[key]["TuesdayConditions"]);
+			var k = data[key]["TuesdayConditions"];
+			var m = data[key]["TuesdayWind"];
+			if (k == 100000 || k == 110000 || k == 100010 || k == 101000){
 				count[0] = count[0] + 1;
 			}
-			else if (){
+			else if (k == 1000){
 				count[1] = count[1] + 1;
 			}
-			else if (){
+			else if (k == 10000 || k == 11000 || k == 10010){
 				count[2] = count[2] + 1;
 			}
-			else if (){
+			else if (m > 20){
 				count[3] = count[3] + 1;
 			}
-			else {
+			else if (k == 0){
 				count[4] = count[4] + 1;
-			}*/
+			}
+			else {
+				count[5] =  count[5] + 1;
+			}
 		});
+		var total = count[0] + count[1] + count[2] + count[3] + count[4] + count[5];
+		var i = 0;
+		for (var key in sequence){
+			var data = [];
+			var num = (count[i] / total) * 100;
+			var percent = num.toFixed(2);
+			var weather = new pieObject(key, count[i], percent.toString() + " %");
+			var everyone = new pieObject("everyone", total - count[i], "");
+			data.push(weather);
+			data.push(everyone)
+			addDonut(data, sequence[key]["color"], sequence[key]["id"]);
+			i = i + 1;
+		}
 	});
-	/*var total = count[0] + count[1] + count[2] + count[3] + count[4];
-	
-	var i = 0;
-	for (var key in sequence){
-		var weather = new pieObject(key, count[i]);
-		var everyone = new pieOjbect("everyone", total - count[i]);
-		data.push(weather);
-		data.push(everyone)
-		addDonut(data, sequence[key]["color"], sequence[key]["id"]);
-		i = i + 1;
-	}*/
 
 }
 
@@ -454,101 +461,60 @@ function addBarChart(){
 
 function addMapChart(){	
 	// handle data
+	var tweets = [];
+	 $.ajax({
+      url: "data/final/TuesdayDataTiny.json",
+      dataType: 'json',
+      async: false,
+      success: function(data) {
+    	for (var i = 0; i < data.length; i++) {
+    		var longi = data[i]["interaction.geo.longitude"];
+    		var lat = data[i]["interaction.geo.latitude"];
+    		var radius = data[i]["klout.score"];
+    		var screenName = data[i]["twitter.user.screen_name"];
+    		var text = data[i]["interaction.content"];
+    		var location = data[i]["twitter.place.full_name"];
+    		var temp = data[i]["TuesdayTemp"];
+    		var fillKey = "USA";
+    		//"salience.content.sentiment"
+    		
+    		var n = new mapObject(longi, lat, radius, screenName, text, location, temp, fillKey)
+    		tweets = tweets.concat(n);
+    	}	
+
+      }
+    });
 	
 	// build location map chart
-	$("#location-container").datamap({
+	$("#map-box").datamap({
         scope: 'usa',
-        bubbles: tweets.toJSON(),
+    	bubbles: tweets,
         bubble_config: {
             popupTemplate: _.template([
                 '<div class="hoverinfo"><strong><%= data.screenName %></strong>',
                 '<br/>Text: <%= data.text %>',
-                '<br/>City: <%= data.city %>',
+                '<br/>Location: <%= data.location %>',
                 '<br/>Temperature: <%= data.temp %>',
                 '</div>'].join(''))
         },
         geography_config: {
             popupOnHover: false,
-            highlightOnHover: false
+            highlightBorderColor: 'steelblue',
+            highlightOnHover: true
         },
         fills: {
             'USA': '#1f77b4',
-            'RUS': '#9467bd',
-            'PRK': '#ff7f0e',
-            'PRC': '#2ca02c',
-            'IND': '#e377c2',
-            'GBR': '#8c564b',
-            'FRA': '#d62728',
-            'PAK': '#7f7f7f',
             defaultFill: '#999999'
         },
         data: {
-            /*'RUS': {fillKey: 'RUS'},
-            'PRK': {fillKey: 'PRK'},
-            'CHN': {fillKey: 'PRC'},
-            'IND': {fillKey: 'IND'},
-            'GBR': {fillKey: 'GBR'},
-            'FRA': {fillKey: 'FRA'},
-            'PAK': {fillKey: 'PAK'},*/
             'USA': {fillKey: 'USA'}
         }
     });
-	
-	
-	
-	/*var centered;
 
-	var path = d3.geo.path();
-	
-	var svg = d3.select("#location-container").append("svg")
-		.attr("width", width)
-		.attr("height", height);
-
-	svg.append("rect")
-		.attr("class", "mapBackground")
-		.attr("width", width)
-		.attr("height", height)
-		.on("click", click);
-
-	var g = svg.append("g")
-		.attr("id", "states");
-
-	d3.json("data/map.json", function(json) {
-		g.selectAll("path")
-			.data(json.features)
-		.enter().append("path")
-			.attr("d", path)
-			.on("click", click);
-	});
-
-	function click(d) {
-		var x, y, k;
-
-		if (d && centered !== d) {
-			var centroid = path.centroid(d);
-			x = centroid[0];
-			y = centroid[1];
-			k = 4;
-			centered = d;
-		} else {
-			x = width / 2;
-			y = height / 2;
-			k = 1;
-			centered = null;
-		}
-
-		g.selectAll("path")
-			.classed("active", centered && function(d) { return d === centered; });
-
-		g.transition()
-			.duration(1000)
-			.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
-			.style("stroke-width", 1.5 / k + "px");
-	}*/
 	
 }
 
-function addDonut(data, color, id) {
+function addDonut(input, color, id) {
 	var width = 200,
 		height = 200,
 		radius = Math.min(width, height) / 2;
@@ -570,29 +536,38 @@ function addDonut(data, color, id) {
 	.append("g")
     	.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-	d3.csv(data, function(error, data) {
-		data.forEach(function(d) {
-			d.count = +d.count;
-		});
-
-		var g = svg.selectAll(".arc")
-			.data(pie(data))
-		.enter().append("g")
-			.attr("class", "arc");
-
-		g.append("path")
-			.attr("d", arc)
-			.style("fill", function(d) { return color(d.data.weather); });
-
-		/*g.append("text")
-			.attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
-			.attr("dy", ".35em")
-			.style("text-anchor", "middle")
-			.text(function(d) { return d.data.weather; });*/
+	input.forEach(function(d) {
+		d.count = +d.count;
 	});
+
+	var g = svg.selectAll(".arc")
+		.data(pie(input))
+	.enter().append("g")
+		.attr("class", "arc");
+
+	g.append("path")
+		.attr("d", arc)
+		.style("fill", function(d) { return color(d.data.weather); });
+	
+	g.append("text")
+		.style("text-anchor", "middle")
+		.text(function(d) { return d.data.percentage; });
 }
 
-function pieObject (prop1, prop2){
+function pieObject (prop1, prop2, prop3){
 	this.weather = prop1;
 	this.count = prop2;
+	this.percentage = prop3;
+}
+
+function mapObject (longi, lat, radius, screenName, text, location, temp, fillKey){
+	this.screenName = screenName;
+	this.text = text;
+	this.latitude = lat;
+	this.longitude = longi;
+	this.radius = radius;
+	this.temp = temp;
+	this.fillKey = fillKey;
+	this.country = "USA";
+	this.location = location;
 }
