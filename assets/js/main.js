@@ -1,5 +1,7 @@
 width = 1200;
 height = 500;
+var counter = 0;
+var temps = [];
 
 window.onload = function() {	
 	// activate tooltips
@@ -15,7 +17,7 @@ function getTweets() {
     var tweet;
     var tweetwords = [];
     $.ajax({
-      url: "data/final/" + $("input[name='dayradio']:checked").val() + "Data.json",
+      url: "data/final/WednesdayData.json",
       dataType: 'json',
       async: false,
       success: function(data) {
@@ -36,6 +38,7 @@ function getTweets() {
         //tweetwords = ['hi'];
         //console.log(data);
         // data is a JavaScript object now. Handle it as such
+        console.log("hi");
         console.log(tweetwords);
         return tweetwords;
 
@@ -43,6 +46,40 @@ function getTweets() {
     });
     return tweetwords;
 }
+
+function getAllTweets() {
+    var tweet;
+    var tweetwords = [];
+    $.ajax({
+      url: "data/final/TuesdayDataSmall.json",
+      dataType: 'json',
+      async: false,
+      success: function(data) {
+        var arraylength = data.length;
+        for (var i = 0; i < 25; i++) {
+           var randomnumber=Math.floor(Math.random()*(arraylength + 1)); 
+           //console.log(randomnumber);
+           //console.log(data);
+            var text = data[i]["TuesdayTemp"];
+            //console.log(text);
+            //var n=text.split(" ");
+            //console.log(n);
+            //console.log(tweetwords.length);
+            tweetwords = tweetwords.concat(text);
+
+        }
+        //console.log(tweetwords);
+        //tweetwords = ['hi'];
+        //console.log(data);
+        // data is a JavaScript object now. Handle it as such
+        console.log(tweetwords);
+        return tweetwords;
+
+      }
+    });
+    return tweetwords;
+}
+
 
 function buildChoropleth() {
 
@@ -116,28 +153,107 @@ function buildSymbol () {
 }
 
 function buildScatter() {
-	var svg = d3.select("#scatterContainer").append("svg:svg")
+	var tweets = getAllTweets();
+    $.ajax({
+      url: "data/final/TuesdayDataTiny.json",
+      dataType: 'json',
+      async: false,
+      success: function(data) {
+        console.log(data.length);
+        var arraylength = data.length;
+        for (var i = 0; i < 140; i++) {
+           //var randomnumber=Math.floor(Math.random()*(arraylength + 1)); 
+           
+            //console.log(randomnumber);
+           //console.log(data);
+            //var text = data[randomnumber]["twitter.text"];
+            //console.log(text);
+            //var n=text.split(" ");
+            //console.log(n);
+            //console.log(tweetwords.length);
+            console.log(i);
+            temps = temps.concat(data[i]["TuesdayTemp"]);
+
+        }
+        //console.log(tweetwords);
+        //tweetwords = ['hi'];
+        //console.log(data);
+        // data is a JavaScript object now. Handle it as such
+        //console.log(tweetwords);
+        //return tweetwords;
+
+      }
+    });
+
+
+    var svg = d3.select("#scatterContainer").append("svg:svg")
 		.attr("width", width)
 		.attr("height", height);
 
-	var circle = svg.selectAll("circle")
-		.data(d3.range(1000).map(function() {
-		return {
-			x: width * Math.random(),
-			y: height * Math.random(),
-			dx: Math.random() - .5,
-			dy: Math.random() - .5
-			};
-		}))
-		.enter().append("svg:circle")
-		.attr("r", 2.5);
+    function color() {
+      if (counter > 140) {
+        counter = 0;
+      }
+      if (temps[counter] < 30) {
+        counter = counter + 1;
+        return "steelblue";
+      }
+      else {
+        counter = counter + 1;
+        return "yellow";
+      }
+      /*
+        if (counter % 7 == 0) {
+            counter = counter + 1;
+            return "steelblue";
+        }
+        else {
+            counter = counter + 1;
+            return "yellow";
+        }*/
+    }
+    if (tweets[counter] < 50) {
+        console.log("test");
+    	var circle = svg.selectAll("circle")
+    		.data(d3.range(1000).map(function() {
+    		return {
+    			x: width * Math.random(),
+    			y: height * Math.random(),
+    			dx: Math.random() - .5,
+    			dy: Math.random() - .5,
+                fill: color()
+    			};
+    		}))
+    		.enter().append("svg:circle")
+    		.attr("r", 2.5)
+    }
 
+    else {
+            var circle = svg.selectAll("circle")
+            .data(d3.range(1000).map(function() {
+            return {
+                x: width * Math.random(),
+                y: height * Math.random(),
+                dx: Math.random() - .5,
+                dy: Math.random() - .5
+                };
+            }))
+            .enter().append("svg:circle")
+            .attr("r", 2.5)
+            .style("fill", color());
+
+
+    }
 	var text = svg.append("svg:text")
 		.attr("x", 20)
 		.attr("y", 20);
 
 	var start = Date.now(),
 		frames = 0;
+
+    circle
+        .style("fill", function(d) { return color(); });
+    ;
 
 	d3.timer(function() {
 
