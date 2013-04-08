@@ -11,6 +11,39 @@ window.onload = function() {
 	buildCloud();
 }
 
+function getTweets() {
+    var tweet;
+    var tweetwords = [];
+    $.ajax({
+      url: "data/final/" + $("input[name='dayradio']:checked").val() + "Data.json",
+      dataType: 'json',
+      async: false,
+      success: function(data) {
+        var arraylength = data.length;
+        for (var i = 0; i < 25; i++) {
+           var randomnumber=Math.floor(Math.random()*(arraylength + 1)); 
+           //console.log(randomnumber);
+           //console.log(data);
+            var text = data[randomnumber]["twitter.text"];
+            //console.log(text);
+            var n=text.split(" ");
+            //console.log(n);
+            //console.log(tweetwords.length);
+            tweetwords = tweetwords.concat(n);
+
+        }
+        //console.log(tweetwords);
+        //tweetwords = ['hi'];
+        //console.log(data);
+        // data is a JavaScript object now. Handle it as such
+        console.log(tweetwords);
+        return tweetwords;
+
+      }
+    });
+    return tweetwords;
+}
+
 function buildChoropleth() {
 
 	/*var svg = d3.select("#choroplethContainer")
@@ -123,11 +156,8 @@ function buildScatter() {
 
 function buildCloud() {
 	var fill = d3.scale.category20();
-
-  d3.layout.cloud().size([width, height])
-      .words([
-        "Hello", "world", "normally", "you", "want", "more", "words",
-        "than", "this"].map(function(d) {
+  d3.layout.cloud().size([width*2, height*2])
+      .words(getTweets().map(function(d) {
         return {text: d, size: 10 + Math.random() * 90};
       }))
       .rotate(function() { return ~~(Math.random() * 2) * 90; })
