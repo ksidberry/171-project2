@@ -276,9 +276,13 @@ function buildScatter() {
         .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
         .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
-    ;
-
-
+/*
+    for (item in d3.selectAll("circle")[0]) {
+      if (item.attr("temperature") < 50) {
+        item.style("opacity", 0);
+      }
+    }
+*/
 	d3.timer(function() {
 
 	// Update the FPS meter.
