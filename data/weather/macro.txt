@@ -1,0 +1,25 @@
+Function closest(design As Range, actual As Range)
+mymin = 1E+15
+mycount = actual.Count
+Dim mydesign(2)
+ReDim myactual(mycount, 2)
+mydesign(1) = design(1)
+mydesign(2) = design(2)
+
+k = 1
+For j = 1 To mycount Step 2
+myactual(k, 1) = actual(j)
+myactual(k, 2) = actual(j + 1)
+k = k + 1
+Next j
+mycount = mycount / 2
+For k = 1 To mycount
+distance = Sqr((mydesign(1) - myactual(k, 1)) ^ 2 + (mydesign(2) - 
+myactual(k, 2)) ^ 2)
+If distance < mymin Then
+mymin = distance
+myindex = k
+End If
+Next k
+closest = myindex
+End Function
