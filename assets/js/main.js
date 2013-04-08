@@ -21,13 +21,12 @@ window.onload = function() {
 				
 				var longi = data[i]["interaction.geo.longitude"];
 				var lat = data[i]["interaction.geo.latitude"];
-				var radius = data[i]["klout.score"];
+				var radius = data[i]["klout.score"] / 5;
 				var screenName = data[i]["twitter.user.screen_name"];
 				var text = data[i]["interaction.content"];
 				var location = data[i]["twitter.place.full_name"];
 				var temp = data[i]["TuesdayTemp"];
-				var fillKey = "USA";
-				//"salience.content.sentiment"
+				var fillKey = sentimentColoring(data[i]["salience.content.sentiment"]);
 			
 				var n = new mapObject(longi, lat, radius, screenName, text, location, temp, fillKey)
 				bubbles = bubbles.concat(n);
@@ -347,23 +346,23 @@ function buildPie() {
 	
 	var sequence = {
 		"fog": {
-			"color": "#999999",
+			"color": "#FFCCFF",
 			"id": "#foggy-donut",
 		},
 		"snow": {
-			"color": "#999999",
+			"color": "#CCFFFF",
 			"id": "#snowy-donut",
 		},
 		"rain": {
-			"color": "#999999",
+			"color": "#3333FF",
 			"id": "#rainy-donut",
 		},
 		"wind": {
-			"color": "#999999",
+			"color": "#CCFF99",
 			"id": "#windy-donut",
 		},
 		"sun": {
-			"color": "#999999",
+			"color": "#FF9900",
 			"id": "#sunny-donut",
 		},
 		"unknown": {
@@ -402,8 +401,8 @@ function buildPie() {
 			var data = [];
 			var num = (count[i] / total) * 100;
 			var percent = num.toFixed(2);
-			var weather = new pieObject(key, count[i], percent.toString() + " %");
-			var everyone = new pieObject("everyone", total - count[i], "");
+			var weather = new pieObject(key, count[i], percent.toString() + " %", total);
+			var everyone = new pieObject("everyone", total - count[i], "", "");
 			data.push(weather);
 			data.push(everyone)
 			addDonut(data, sequence[key]["color"], sequence[key]["id"]);
@@ -414,7 +413,7 @@ function buildPie() {
 }
 
 function buildBarChart(values){
-	var margin = {top: 10, right: 30, bottom: 30, left: 30},
+	var margin = {top: 10, right: 30, bottom: 31, left: 30},
 		w = width - margin.left - margin.right,
 		h = height - margin.top - margin.bottom;
 
@@ -451,8 +450,6 @@ function buildBarChart(values){
 		.attr("x", 1)
 		.attr("width", 142.5)
 		.attr("height", function(d) { return h - y(d.y); });
-		//console.log(data);
-		//x(data[0].dx) - 1
 
 	bar.append("text")
 		.attr("dy", ".75em")
@@ -470,7 +467,7 @@ function buildBarChart(values){
 
 function buildMapChart(tweets){		
 	// build location map chart
-	$("#test").datamap({
+	$("#map-container").datamap({
         scope: 'usa',
     	bubbles: tweets,
         bubble_config: {
@@ -479,22 +476,27 @@ function buildMapChart(tweets){
                 '<br/>Text: <%= data.text %>',
                 '<br/>Location: <%= data.location %>',
                 '<br/>Temperature: <%= data.temp %>',
+                '<br/>Sentiment: <%= data.fillKey %>',
                 '</div>'].join(''))
         },
         geography_config: {
-            popupOnHover: false,
+            popupOnHover: true,
             highlightBorderColor: 'steelblue',
-            highlightOnHover: true
+            highlightOnHover: true,
+            popupTemplate: _.template('<div class="hoverinfo"><strong><%= geography.properties.name %></strong></div>')
         },
         fills: {
-            'USA': '#1f77b4',
+            'tier1': '#660000',
+            'tier2': '#FF0000',
+            'tier3': '#FF9933',
+            'tier4': '#CCFF66',
+            'tier5': '#339933',
             defaultFill: '#999999'
         },
         data: {
             'USA': {fillKey: 'USA'}
         }
     });
-
 	
 }
 
@@ -535,13 +537,37 @@ function addDonut(input, color, id) {
 	
 	g.append("text")
 		.style("text-anchor", "middle")
+		.style("font-size", "25px")
 		.text(function(d) { return d.data.percentage; });
+		
+ 	d3.select(id + "-text").append('p')
+ 		.data(pie(input))
+ 		.text(function(d) { return "There have been " + d.data.count + " occurrences of " + d.data.weather + " out of " + d.data.total; });
 }
 
-function pieObject (prop1, prop2, prop3){
+function sentimentColoring(sentiment) {
+	if (sentiment < -10){
+		return "tier1";
+	}
+	if (sentiment < 0 && sentiment >= -10){
+		return "tier2";
+	}
+	if (sentiment == 0){
+		return "tier3";
+	}
+	if (sentiment > 0 && sentiment <= 10){
+		return "tier4";
+	}
+	if (sentiment > 10){
+		return "tier5";
+	}
+}
+
+function pieObject (prop1, prop2, prop3, prop4){
 	this.weather = prop1;
 	this.count = prop2;
 	this.percentage = prop3;
+	this.total = prop4;
 }
 
 function mapObject (longi, lat, radius, screenName, text, location, temp, fillKey){

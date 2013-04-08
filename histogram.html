@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- styles -->
+	<link href="assets/css/bootstrap.css" rel="stylesheet">
+	<link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="assets/css/styles.css" rel="stylesheet">
+</head>
+
+<body>
+	<!-- Navbar -->
+	<div class="navbar navbar-inverse navbar-static-top">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">Weatherly D3pression</a>
+			<ul class="nav">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						TwitterSphere
+						<b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="scatter.html">Scatter</a></li>
+						<li><a href="tweets.html">WordCloud</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						Metrics
+						<b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="#">Sentiment Histogram</a></li>
+						<li><a href="weather.html">Weather Donuts</a></li>
+						<li><a href="map.html">Tweet Map</a></li>
+					</ul>
+				</li>
+				<li><a href="screencast.html">Screencast</a></li>
+				<li><a href="about.html">About</a></li>
+			</ul>
+		</div>
+	</div>
+	
+	<!-- Subbar -->
+	<div class="row subBar">
+		<div class="span4">
+			<h2>Sentiment Histogram</h2>
+		</div>
+	</div>
+	
+	<!-- svg container -->
+	<div class="row">
+		<div id="sentiment-container"></div>
+	</div>
+
+	<!-- javascript -->
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="http://d3js.org/topojson.v0.min.js"></script>
+	<script src="http://d3js.org/queue.v1.min.js"></script>
+	<script src="http://www.jasondavies.com/wordcloud/d3.layout.cloud.js"></script>
+	<script src="http://datamaps.github.com/scripts/datamaps-all.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
+	<script src="assets/js/main.js"></script>
+</body>
+
+</html>

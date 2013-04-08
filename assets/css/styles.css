@@ -37,25 +37,6 @@ mapBackground {
 }*/
 
 
-/* symbol map stylings */
-#states path, #state-centroids circle {
-	fill: #ccc;
-	stroke: #fff;
-	stroke-width: 1.0px;
-}
-
-#state-centroids circle {
-  fill: steelblue;
-  fill-opacity: .8;
-}
-
-/* choropleth map */
-/*#choropleth-counties path {
-  stroke: #fff;
-  stroke-width: .25px;
-}
-*/
-
 /* histogram */
 rect {
   fill: steelblue;
@@ -65,11 +46,6 @@ rect {
 .bar text {
   fill: #fff;
 }
-
-/*line {
-  stroke: black;
-  shape-rendering: crispEdges;
-}*/
 
 .axis path, .axis line {
   fill: none;
