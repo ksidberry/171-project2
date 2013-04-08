@@ -38,7 +38,7 @@ function getTweets() {
         //tweetwords = ['hi'];
         //console.log(data);
         // data is a JavaScript object now. Handle it as such
-        console.log(tweetwords);
+        //console.log(tweetwords);
         return tweetwords;
 
       }
@@ -166,7 +166,7 @@ function buildScatter() {
         for (var i = 0; i < data.length; i++) {
            //var randomnumber=Math.floor(Math.random()*(arraylength + 1)); 
            
-            console.log(data[i]["sentiment"]);
+            //console.log(data[i]["sentiment"]);
            //console.log(data);
             //var text = data[randomnumber]["twitter.text"];
             //console.log(text);
@@ -174,10 +174,10 @@ function buildScatter() {
             //console.log(n);
             //console.log(tweetwords.length);
             //console.log(i);
-            temps = temps.concat(data[i]["sentiment"]);
+            temps = temps.concat(data[i]);
 
         }
-        //console.log(tweetwords);
+        //console.log(temps);
         //tweetwords = ['hi'];
         //console.log(data);
         // data is a JavaScript object now. Handle it as such
@@ -192,57 +192,39 @@ function buildScatter() {
 		.attr("width", width)
 		.attr("height", height);
 
+    function tweetText() {
+       counter = counter + 1;
+      return temps[counter]["text"];
+
+    }
+
+    function temp() {
+       counter = counter + 1;
+       //console.log(counter);
+       return temps[counter - 1]["WednesdayTemp"];
+
+    }
+
+
     function color() {
-      /*
-      var coldest = d3.lab("#d5feff");
-      var cold = coldest.darker();
-      var nice = cold.darker();
-      var hot = nice.darker();
-      var hottest = hot.darker();
-
-      if (counter > 597) {
-        counter = 0;
-      }
-      if (temps[counter] < 40) {
-        counter = counter + 1;
-        return coldest;
-      }
-      else if (counter < 60) {
-        counter = counter + 1;
-        return cold;
-      }
-      else if (counter < 70) {
-        counter = counter + 1;
-        return nice;
-      }
-      else if (counter < 80) {
-        counter = counter + 1;
-        return hot;
-      }
-      else {
-        counter = counter + 1;
-        return hottest;
-      }
-*/
-
+       counter = counter + 1;
+      console.log(counter);
       var negative = "#ff7480";
       var positive = "#4a83ff";
-      var neutral = "#b5b5b5";
+      var neutral = "#808080";
 
-
-      if (counter > 597) {
-        counter = 0;
-      }
-      if (temps[counter] < 0) {
-        counter = counter + 1;
+      console.log("HI");
+      //console.log(temps[counter]["sentiment"]);
+      if (temps[counter]["sentiment"] < 0) {
+        //counter = counter + 1;
         return negative;
       }
-      else if (counter > 60) {
-        counter = counter + 1;
+      else if (temps[counter]["sentiment"] > 0) {
+        //counter = counter + 1;
         return positive;
       }
       else {
-        counter = counter + 1;
+        //counter = counter + 1;
         return neutral;
       }
 
@@ -267,7 +249,7 @@ function buildScatter() {
       };
   }))
   .enter().append("svg:circle")
-  .attr("r", 5);
+  .attr("r", 7.5);
 
 	var text = svg.append("svg:text")
 		.attr("x", 20)
@@ -276,9 +258,26 @@ function buildScatter() {
 	var start = Date.now(),
 		frames = 0;
 
+    var tooltip = d3.select("body")
+  .append("div")
+  .attr("id", "tooltip")
+  .style("position", "absolute")
+  .style("z-index", "10")
+  .style("visibility", "hidden")
+  .text("a simple tooltip");
+
+
+
     circle
-        .style("fill", function(d) { return color(); });
+        .style("fill", function(d) { return color(); })
+        .attr("text", function(d) {return tweetText();})
+        .attr("temperature", function(d) {return temp();})
+        .on("mouseover", function(){d3.select("#tooltip").html(function(d) { return "Temperature: " + temp() + "<br />Tweet: " + tweetText(); }); return tooltip.style("visibility", "visible"); })
+        .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+        .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+
     ;
+
 
 	d3.timer(function() {
 
