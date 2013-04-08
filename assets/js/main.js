@@ -8,7 +8,7 @@ window.onload = function() {
 	$('.tool-info').tooltip();
 	buildChoropleth();
 	buildSymbol();
-	buildScatter();
+	buildScatterPlot();
 	buildMetrics();
 	buildCloud();
 }
@@ -38,8 +38,7 @@ function getTweets() {
         //tweetwords = ['hi'];
         //console.log(data);
         // data is a JavaScript object now. Handle it as such
-        //console.log("hi");
-        //console.log(tweetwords);
+        console.log(tweetwords);
         return tweetwords;
 
       }
@@ -303,8 +302,82 @@ function buildScatter() {
 
 }
 
+function buildScatterPlot() {
+      $.ajax({
+      url: "data/final/TuesdayDataSmall.json",
+      dataType: 'json',
+      async: false,
+      success: function(data) {
+        var arraylength = data.length;
+        for (var i = 0; i < 50; i++) {
+            temps = temps.concat(data[i]);
+
+        }
+      }
+    });
+
+  console.log(temps);
+  var svg = d3.select("#scatterContainer").append("svg:svg")
+    .attr("width", width)
+    .attr("height", height);
+
+  var circle = svg.selectAll("circle")
+    .data(temps.map(function(d) {
+    return {
+      x: width * Math.random(),
+      y: height * Math.random(),
+      dx: Math.random() - .5,
+      dy: Math.random() - .5,
+      temp: d["TuesdayTemp"],
+      wind: d["TuesdayWind"],
+      conditions: d["TuesdayConditions"],
+      rain: d["TuesdayRain"],
+      sentiment: d["salience.content.sentiment"],
+      text: d["twitter.text"],
+      username: d["interaction.author.username"],
+      };
+    }))
+    .enter().append("svg:circle")
+    .attr("r", 7.5);
+
+  var text = svg.append("svg:text")
+    .attr("x", 20)
+    .attr("y", 20);
+
+      var tooltip = d3.select("body")
+  .append("div")
+  .attr("id", "tooltip")
+  .style("position", "absolute")
+  .style("z-index", "10")
+  .style("visibility", "hidden")
+  .text("a simple tooltip");
+
+
+
+  var start = Date.now(),
+    frames = 0;
+
+  d3.timer(function() {
+
+  // Update the FPS meter.
+  var now = Date.now(), duration = now - start;
+  text.text(~~(++frames * 1000 / duration));
+  if (duration >= 1000) frames = 0, start = now;
+
+  // Update the circle positions.
+  circle
+    .attr("cx", function(d) { d.x += d.dx; if (d.x > width) d.x -= width; else if (d.x < 0) d.x += width; return d.x; })
+    .attr("cy", function(d) { d.y += d.dy; if (d.y > height) d.y -= height; else if (d.y < 0) d.y += height; return d.y; })
+    .on("mouseover", function(d){d3.select("#tooltip").html(function() { return "Temperature: " + d.temp + "<br />Tweet: " + d.text; }); return tooltip.style("visibility", "visible"); })
+    .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+    .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+
+  });
+
+}
+
 function buildCloud() {
-	var fill = d3.scale.category20();
+  var fill = d3.scale.category20();
   d3.layout.cloud().size([width*2, height*2])
       .words(getTweets().map(function(d) {
         return {text: d, size: 10 + Math.random() * 90};
