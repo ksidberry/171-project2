@@ -8,16 +8,6 @@ var temps = [];
 
 window.onload = function() {	
 	// process data
-   $("#negative-sentiment").click(
-      function(){ 
-        var t = d3.selectAll("circle").data().filter(function(d, i){ 
-          return d.sentiment > -10 
-        }); 
-        console.log(t);
-        console.log(t.length); 
-        t.exit().transition().delay(2000).remove();
-    });
-
 	var bars = [],
 		bubbles = [];
 	$.ajax({
@@ -46,11 +36,18 @@ window.onload = function() {
 	
 	// activate tooltips
 	$('.tool-info').tooltip();
-	
+<<<<<<< HEAD
+	buildChoropleth();
+	buildSymbol();
 	buildScatterPlot();
+	buildMetrics();
+=======
+	
+	buildScatter();
 	buildBarChart(bars);
 	buildMapChart(bubbles);
 	buildPie();
+>>>>>>> 50e1b7db5e56aa4739133276ff9c1697832e8131
 	buildCloud();
 }
 
@@ -358,7 +355,6 @@ function buildScatterPlot() {
     });
 
   console.log(temps);
-  console.log(temps.length); 
   var svg = d3.select("#scatterContainer").append("svg:svg")
     .attr("width", width)
     .attr("height", height);
@@ -650,14 +646,11 @@ function addDonut(input, color, id) {
 	g.append("text")
 		.style("text-anchor", "middle")
 		.style("font-size", "25px")
-		.text(function(d) { return d.data.percentage; })
-		.attr("transform", "translate(0,8)");
+		.text(function(d) { return d.data.percentage; });
 		
  	d3.select(id + "-text").append('p')
  		.data(pie(input))
- 		.text(function(d) { return "There have been " + d.data.count + " occurrences of " + d.data.weather + " out of " + d.data.total; })
- 			.style("color", color)
- 			.attr("class", "weather-text");
+ 		.text(function(d) { return "There have been " + d.data.count + " occurrences of " + d.data.weather + " out of " + d.data.total; });
 }
 
 function sentimentColoring(sentiment) {
