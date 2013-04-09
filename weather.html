@@ -42,13 +42,13 @@
 	
 	<!-- Subbar -->
 	<div class="row subBar">
-		<div class="span4">
+		<div>
 			<h2>Weather Donuts</h2>
 		</div>
 	</div>
 	
 	<!-- svg container -->
-	<div id="weather-container">
+	<div id="weather-container" class="offset1">
 		<div class="row weather-row">
 			<div class="span2">
 				<h2>Sunny</h2>
@@ -92,9 +92,19 @@
 			<div id="unknown-donut-text" class="span6"></div>
 		</div>
 	</div>
+	
+	<div class="offset1"> 
+		<h3>Description:</h3>
+		<div class="span10">
+			<p>
+				The above visualization simply measure the proportions of different weather conditions against each other.
+				Percentages and pie donuts are included to help demonstrate the difference in weather frequency. 
+			</p>
+		</div>
+	</div>
 
 	<!-- javascript -->
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<script src="http://d3js.org/d3.v3.min.js"></script>
 	<script src="http://d3js.org/topojson.v0.min.js"></script>
 	<script src="http://d3js.org/queue.v1.min.js"></script>

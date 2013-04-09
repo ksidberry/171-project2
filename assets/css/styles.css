@@ -1,3 +1,30 @@
+.subBar div {
+	border-bottom: 2px solid #CCCCCC;
+}
+
+.subBar div h2 {
+	padding-left: 70px;
+}
+
+/* weather donut stylings */
+#weather-container {
+	margin-top: 30px;
+} 
+
+.weather-row {
+	margin-bottom: 30px;
+	border-bottom: 2px solid #CCCCCC;
+}
+
+.weather-row:last-child {
+	margin-bottom: 0px;
+}
+
+.weather-text {
+	font-size: 30px;
+	line-height: 30px;
+}
+
 /* metrics map stylings */
 mapBackground {
 	fill: none;
@@ -19,23 +46,6 @@ mapBackground {
 .arc path {
 	stroke: $fff;
 }
-
-/* bar graph stylings */
-/*.axis path,
-.axis line {
-	fill: none;
-	stroke: #000;
-	shape-rendering: crispEdges;
-}
-
-.bar {
-	fill: steelblue;
-}
-
-.x.axis path {
-	display: none;
-}*/
-
 
 /* histogram */
 rect {

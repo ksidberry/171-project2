@@ -42,18 +42,28 @@
 	
 	<!-- Subbar -->
 	<div class="row subBar">
-		<div class="span4">
+		<div>
 			<h2>Sentiment Histogram</h2>
 		</div>
 	</div>
 	
 	<!-- svg container -->
 	<div class="row">
-		<div id="sentiment-container"></div>
+		<div id="sentiment-container" class="offset1"></div>
+	</div>
+	
+	<div class="offset1"> 
+		<h3>Description:</h3>
+		<div class="span10">
+			<p>
+				The above graph is a histogram displaying the frequency of various sentiment ratings. The numbers posted at the top of the 
+				bars are the number of items with that range of sentiment values. 
+			</p>
+		</div>
 	</div>
 
 	<!-- javascript -->
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<script src="http://d3js.org/d3.v3.min.js"></script>
 	<script src="http://d3js.org/topojson.v0.min.js"></script>
 	<script src="http://d3js.org/queue.v1.min.js"></script>

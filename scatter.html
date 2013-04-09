@@ -42,20 +42,20 @@
 	
 	<!-- tweet subbar -->
 	<div class="row subBar">
-		<div class="span2">
+		<div>
 			<h2>Scatter</h2>
 		</div>
-		<div id="scatterTweetBar" class="span10"></div>
+		<div id="scatterTweetBar"></div>
 	</div>
 	
 	<!-- svg container -->
 	<div class="row">
-		<div id="scatterContainer"></div>
+		<div id="scatterContainer" class="offset1"></div>
 	</div>
 
 	<!-- controls and filters -->
 	<div id="scatterFilter" class="row well well-large">
-		<div class="span2" style="padding-left: 30px">
+		<div class="span4" style="padding-left: 30px">
 			<p>Temperature:</p>
 			<div class="btn-group">
 				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -72,7 +72,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="span2">
+		<div class="span4">
 			<p>Weather:</p>
 			<button class="btn btn-primary" type="button">All</button>
 			<button class="btn tool-info" type="button">Sunny</button>
@@ -81,7 +81,7 @@
 			<button class="btn tool-info" type="button">Snowy</button>
 			<button class="btn tool-info" title="Windspeed over 20 knots" type="button">Windy</button>
 		</div>
-		<div class="span2">
+		<div class="span4">
 			<p>Sentiment:</p>
 			<button class="btn btn-primary" type="button">All</button>
 			<button class="btn tool-info" type="button" title="Overwhelming Negative ((20)-(10))"><img src="http://iibh.apphb.com/Content/images/scores/5.png" /></button>
@@ -89,6 +89,15 @@
 			<button class="btn tool-info" type="button" title="Neutral (0)"><img src="http://iibh.apphb.com/Content/images/scores/3.png" /></button>
 			<button class="btn tool-info" type="button" title="Generally Positive (1-10)"><img src="http://iibh.apphb.com/Content/images/scores/2.png" /></button>
 			<button class="btn tool-info" type="button" title="Overwhelmingly Positive (11-20)"><img src="http://iibh.apphb.com/Content/images/scores/1.png" /></button>
+		</div>
+	</div>
+	
+	<div class="offset1"> 
+		<h3>Description:</h3>
+		<div class="span10">
+			<p>
+				Our scatter visualization displays tweets as moving circles across the space.
+			</p>
 		</div>
 	</div>
 

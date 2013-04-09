@@ -566,11 +566,14 @@ function addDonut(input, color, id) {
 	g.append("text")
 		.style("text-anchor", "middle")
 		.style("font-size", "25px")
-		.text(function(d) { return d.data.percentage; });
+		.text(function(d) { return d.data.percentage; })
+		.attr("transform", "translate(0,8)");
 		
  	d3.select(id + "-text").append('p')
  		.data(pie(input))
- 		.text(function(d) { return "There have been " + d.data.count + " occurrences of " + d.data.weather + " out of " + d.data.total; });
+ 		.text(function(d) { return "There have been " + d.data.count + " occurrences of " + d.data.weather + " out of " + d.data.total; })
+ 			.style("color", color)
+ 			.attr("class", "weather-text");
 }
 
 function sentimentColoring(sentiment) {

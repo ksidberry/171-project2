@@ -42,18 +42,34 @@
 	
 	<!-- Subbar -->
 	<div class="row subBar">
-		<div class="span4">
+		<div>
 			<h2>Tweet Map</h2>
 		</div>
 	</div>
 	
 	<!-- svg container -->
 	<div class="row">
-		<div id="map-container" style="width: 1200px; height: 600px;"></div>
+		<div id="map-container" class="offset1" style="width: 1200px; height: 600px;"></div>
+	</div>
+	
+	
+	
+	<div class="offset1"> 
+		<h3>Description:</h3>
+		<div class="span10">
+			<p>
+				The above visualization is a data bubble map that displays tweets by location.
+				The color of the bubbles represent the sentiment readings of that particular tweet. The legend is presented above. 
+				The size of the bubbles are determined the tweet's klout, or its influence in the Twitter
+				space. The tweets latitude and longitude is used to geographically position the bubble on the map. 
+				The text, location, temperature, and a sentiment values of the tweet are included in the tooltip 
+				when the user hovers over the tweet bubbles.  
+			</p>
+		</div>
 	</div>
 
 	<!-- javascript -->
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<script src="http://d3js.org/d3.v3.min.js"></script>
 	<script src="http://d3js.org/topojson.v0.min.js"></script>
 	<script src="http://d3js.org/queue.v1.min.js"></script>
