@@ -57,20 +57,9 @@
 	<div id="scatterFilter" class="row well well-large">
 		<div class="span2" style="padding-left: 30px">
 			<p>Temperature:</p>
-			<div class="btn-group">
-				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-					Temperature
-					<span class="caret"></span>
-				</a>
-				<ul class="dropdown-menu">
-					<li><a>All Temperatures</a></li>
-					<li id="zerotwenty"><a>0 - 20 degrees</a></li>
-					<li><a>20 - 40 degrees</a></li>
-					<li><a>40 - 60 degrees</a></li>
-					<li><a>60 - 80 degrees</a></li>
-					<li><a>80 - 100 degrees</a></li>
-				</ul>
-			</div>
+			<button class="btn tool-info" type="button" title="cold">< 30 degrees</button>
+			<button class="btn tool-info" type="button" title="warm">30 - 60 degrees</button>
+			<button class="btn tool-info" type="button" title="hot">> 60 degrees</button>
 		</div>
 		<div class="span2">
 			<p>Weather:</p>
@@ -84,11 +73,9 @@
 		<div class="span2">
 			<p>Sentiment:</p>
 			<button class="btn btn-primary" type="button">All</button>
-			<button class="btn tool-info" type="button" title="Overwhelming Negative ((20)-(10))"><img src="http://iibh.apphb.com/Content/images/scores/5.png" /></button>
-			<button class="btn tool-info" type="button" title="Generally Negative ((9)-(1))"><img src="http://iibh.apphb.com/Content/images/scores/4.png" /></button>
-			<button class="btn tool-info" type="button" title="Neutral (0)"><img src="http://iibh.apphb.com/Content/images/scores/3.png" /></button>
-			<button class="btn tool-info" type="button" title="Generally Positive (1-10)"><img src="http://iibh.apphb.com/Content/images/scores/2.png" /></button>
-			<button class="btn tool-info" type="button" title="Overwhelmingly Positive (11-20)"><img src="http://iibh.apphb.com/Content/images/scores/1.png" /></button>
+			<button class="btn tool-info" type="button" title="Negative" id="negative-sentiment"><img src="http://iibh.apphb.com/Content/images/scores/4.png" /></button>
+			<button class="btn tool-info" type="button" title="Neutral" id="neutral-sentiment"><img src="http://iibh.apphb.com/Content/images/scores/3.png" /></button>
+			<button class="btn tool-info" type="button" title="Positive" id="positive-sentiment"><img src="http://iibh.apphb.com/Content/images/scores/1.png" /></button>
 		</div>
 	</div>
 

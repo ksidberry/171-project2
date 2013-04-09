@@ -8,6 +8,16 @@ var temps = [];
 
 window.onload = function() {	
 	// process data
+   $("#negative-sentiment").click(
+      function(){ 
+        var t = d3.selectAll("circle").data().filter(function(d, i){ 
+          return d.sentiment > -10 
+        }); 
+        console.log(t);
+        console.log(t.length); 
+        t.exit().transition().delay(2000).remove();
+    });
+
 	var bars = [],
 		bubbles = [];
 	$.ajax({
@@ -37,7 +47,7 @@ window.onload = function() {
 	// activate tooltips
 	$('.tool-info').tooltip();
 	
-	buildScatter();
+	buildScatterPlot();
 	buildBarChart(bars);
 	buildMapChart(bubbles);
 	buildPie();
@@ -348,6 +358,7 @@ function buildScatterPlot() {
     });
 
   console.log(temps);
+  console.log(temps.length); 
   var svg = d3.select("#scatterContainer").append("svg:svg")
     .attr("width", width)
     .attr("height", height);
