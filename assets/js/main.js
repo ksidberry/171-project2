@@ -21,7 +21,7 @@ window.onload = function() {
 	var bars = [],
 		bubbles = [];
 	$.ajax({
-		url: "data/final/TuesdayDataTiny.json",
+		url: "data/final/TuesdayDataSmall.json",
 		dataType: 'json',
 		async: false,
 		success: function(data) {
@@ -40,6 +40,8 @@ window.onload = function() {
 			
 				var n = new mapObject(longi, lat, radius, screenName, text, location, temp, fillKey)
 				bubbles = bubbles.concat(n);
+				
+				temps = temps.concat(data[i]);
 			}
 		}
 	});
@@ -47,11 +49,12 @@ window.onload = function() {
 	// activate tooltips
 	$('.tool-info').tooltip();
 	
-	buildScatterPlot();
+	buildScatterPlot(temps);
 	buildBarChart(bars);
 	buildMapChart(bubbles);
 	buildPie();
 	buildCloud();
+
 }
 
 function getTweets() {
@@ -199,8 +202,8 @@ var map = new Map({
 }*/
 
 
-function buildScatterPlot() {
-      $.ajax({
+function buildScatterPlot(temps) {
+      /*$.ajax({
       url: "data/final/TuesdayDataSmall.json",
       dataType: 'json',
       async: false,
@@ -211,10 +214,10 @@ function buildScatterPlot() {
 
         }
       }
-    });
+    });*/
 
-  console.log(temps);
-  console.log(temps.length); 
+  //console.log(temps);
+  //console.log(temps.length); 
   var svg = d3.select("#scatterContainer").append("svg:svg")
     .attr("width", width)
     .attr("height", height);
@@ -249,20 +252,18 @@ function buildScatterPlot() {
     .enter().append("svg:circle")
     .attr("r", 7.5)
     .attr("fill", function(d) { return colorSentiment(d.sentiment) });
-
+  
   var text = svg.append("svg:text")
     .attr("x", 20)
     .attr("y", 20);
 
-      var tooltip = d3.select("body")
+ var tooltip = d3.select("body")
   .append("div")
   .attr("id", "tooltip")
   .style("position", "absolute")
   .style("z-index", "10")
   .style("visibility", "hidden")
   .text("a simple tooltip");
-
-
 
   var start = Date.now(),
     frames = 0;
@@ -278,7 +279,7 @@ function buildScatterPlot() {
   circle
     .attr("cx", function(d) { d.x += d.dx; if (d.x > width) d.x -= width; else if (d.x < 0) d.x += width; return d.x; })
     .attr("cy", function(d) { d.y += d.dy; if (d.y > height) d.y -= height; else if (d.y < 0) d.y += height; return d.y; })
-    .on("mouseover", function(d){d3.select("#tooltip").html(function() { return "Username: " + d.username + "<br />Tweet: " + d.text + "<br />Sentiment: " + d.sentiment + "<br />Temperature: " + d.temp + "<br />Rainfall: " + d.rain + "<br />Wind speed: " + d.wind; }); return tooltip.style("visibility", "visible"); })
+    .on("mouseover", function(d){d3.select("#tooltip").html(function() { return "<strong>Username:</strong> " + d.username + "<br /><strong>Tweet:</strong> " + d.text + "<br /><strong>Sentiment:</strong> " + d.sentiment + "<br /><strong>Temperature:</strong> " + d.temp + "<br /><strong>Rainfall:</strong> " + d.rain + "<br /><strong>Wind speed:</strong> " + d.wind; }); return tooltip.style("visibility", "visible"); })
     .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
     .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
@@ -563,4 +564,78 @@ function mapObject (longi, lat, radius, screenName, text, location, temp, fillKe
 	this.fillKey = fillKey;
 	this.country = "USA";
 	this.location = location;
+}
+
+function blah(id) {
+	$("#scatterContainer").empty();
+	var low = [];
+	$.ajax({
+		url: "data/final/TuesdayDataSmall.json",
+		dataType: 'json',
+		async: false,
+		success: function(data) {
+			for (var i = 0; i < data.length; i++) {
+				if (id == '$low'){
+					if (data[i]["TuesdayTemp"] < 30){
+						low = low.concat(data[i]);	
+					}
+				}
+				else if (id == '$mid'){
+					if (data[i]["TuesdayTemp"] >= 30 && data[i]["TuesdayTemp"] <= 60){
+						low = low.concat(data[i]);
+					}
+				}
+				else if (id == '$high'){
+					if (data[i]["TuesdayTemp"] > 60){
+						low = low.concat(data[i]);;		
+					}
+				}
+				else if (id == '$sunnyButton'){
+					if (data[i]["TuesdayConditions"] == 0){
+						low = low.concat(data[i]);;		
+					}
+				}
+				else if (id == '$foggyButton'){
+					if (data[i]["TuesdayConditions"] == 100000 || data[i]["TuesdayConditions"] == 110000 || data[i]["TuesdayConditions"] == 100010 || data[i]["TuesdayConditions"] == 101000){
+						low = low.concat(data[i]);;		
+					}
+				}
+				else if (id == '$snowyButton'){
+					if (data[i]["TuesdayConditions"] == 1000){
+						low = low.concat(data[i]);;		
+					}
+				}
+				else if (id == '$windyButton'){
+					if (data[i]["TuesdayWind"] > 20){
+						low = low.concat(data[i]);;		
+					}
+				}
+				else if (id == '$rainyButton'){
+					if (data[i]["TuesdayConditions"] == 10000 || data[i]["TuesdayConditions"] == 11000 || data[i]["TuesdayConditions"] == 10010){
+						low = low.concat(data[i]);;		
+					}
+				}
+				else if (id == '$negativeButton'){
+					if (data[i]["salience.content.sentiment"] < 0){
+						low = low.concat(data[i]);;		
+					}
+				}
+				else if (id == '$neutralButton'){
+					if (data[i]["salience.content.sentiment"] == 0){
+						low = low.concat(data[i]);;		
+					}
+				}
+				else if (id == '$positiveButton'){
+					if (data[i]["salience.content.sentiment"] > 0){
+						low = low.concat(data[i]);;		
+					}
+				}
+				else if (id == '$all'){
+					low = low.concat(data[i]);;		
+				}
+				
+			}
+		}
+	});
+	buildScatterPlot(low);
 }
