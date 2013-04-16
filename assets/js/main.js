@@ -257,7 +257,7 @@ function buildScatterPlot(temps) {
     .attr("x", 20)
     .attr("y", 20);
 
- var tooltip = d3.select("body")
+ var tooltip = d3.select("#scatterContainer")
   .append("div")
   .attr("id", "tooltip")
   .style("position", "absolute")
@@ -287,7 +287,7 @@ function buildScatterPlot(temps) {
 
 }
 
-function buildCloud() {
+/*function buildCloud() {
   var fill = d3.scale.category20();
   d3.layout.cloud().size([width*2, height*2])
       .words(getTweets().map(function(d) {
@@ -318,9 +318,9 @@ function buildCloud() {
         .text(function(d) { return d.text; });
   }
 
-}
+}*/
 
-function buildPie() {
+/*function buildPie() {
 	
 	// fog, snow, rain, wind, sun, unknown
 	var count = [0, 0, 0, 0, 0, 0];	
@@ -391,7 +391,7 @@ function buildPie() {
 		}
 	});
 
-}
+}*/
 
 function buildBarChart(values){
 	var margin = {top: 10, right: 30, bottom: 31, left: 30},
@@ -481,7 +481,7 @@ function buildMapChart(tweets){
 	
 }
 
-function addDonut(input, color, id) {
+/*function addDonut(input, color, id) {
 	var width = 200,
 		height = 200,
 		radius = Math.min(width, height) / 2;
@@ -527,7 +527,7 @@ function addDonut(input, color, id) {
  		.text(function(d) { return "There have been " + d.data.count + " occurrences of " + d.data.weather + " out of " + d.data.total; })
  			.style("color", color)
  			.attr("class", "weather-text");
-}
+}*/
 
 function sentimentColoring(sentiment) {
 	if (sentiment < -10){
@@ -547,12 +547,12 @@ function sentimentColoring(sentiment) {
 	}
 }
 
-function pieObject (prop1, prop2, prop3, prop4){
+/*function pieObject (prop1, prop2, prop3, prop4){
 	this.weather = prop1;
 	this.count = prop2;
 	this.percentage = prop3;
 	this.total = prop4;
-}
+}*/
 
 function mapObject (longi, lat, radius, screenName, text, location, temp, fillKey){
 	this.screenName = screenName;
