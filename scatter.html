@@ -57,25 +57,26 @@
 	<div id="scatterFilter" class="row well well-large">
 		<div class="span4" style="padding-left: 30px">
 			<p>Temperature:</p>
-			<button class="btn tool-info" type="button" title="cold">< 30 degrees</button>
-			<button class="btn tool-info" type="button" title="warm">30 - 60 degrees</button>
-			<button class="btn tool-info" type="button" title="hot">> 60 degrees</button>
+			<button id="tempAll" class="btn tool-info btn-primary" type="button" title="hot" onclick="blah('$all');">All</button>
+			<button id="low" class="btn tool-info" type="button" title="cold" onclick="blah('$low');">< 30 degrees</button>
+			<button id="mid" class="btn tool-info" type="button" title="warm" onclick="blah('$mid');">30 - 60 degrees</button>
+			<button id="high" class="btn tool-info" type="button" title="hot" onclick="blah('$high');">> 60 degrees</button>
 		</div>
 		<div class="span4">
 			<p>Weather:</p>
-			<button class="btn btn-primary" type="button">All</button>
-			<button class="btn tool-info" type="button">Sunny</button>
-			<button class="btn tool-info" type="button">Foggy</button>
-			<button class="btn tool-info" type="button">Rainy</button>
-			<button class="btn tool-info" type="button">Snowy</button>
-			<button class="btn tool-info" title="Windspeed over 20 knots" type="button">Windy</button>
+			<button class="btn btn-primary" type="button" onclick="blah('$all');">All</button>
+			<button id="sunnyButton" class="btn tool-info" type="button" onclick="blah('$sunnyButton');">Sunny</button>
+			<button id="foggyButton" class="btn tool-info" type="button" onclick="blah('$foggyButton');">Foggy</button>
+			<button id="rainyButton" class="btn tool-info" type="button" onclick="blah('$rainyButton');">Rainy</button>
+			<button id="snowyButton" class="btn tool-info" type="button" onclick="blah('$snowyButton');">Snowy</button>
+			<button id="windyButton" class="btn tool-info" title="Windspeed over 20 knots" type="button" onclick="blah('$windyButton');">Windy</button>
 		</div>
 		<div class="span4">
 			<p>Sentiment:</p>
-			<button class="btn btn-primary" type="button">All</button>
-			<button class="btn tool-info" type="button" title="Negative" id="negative-sentiment"><img src="http://iibh.apphb.com/Content/images/scores/4.png" /></button>
-			<button class="btn tool-info" type="button" title="Neutral" id="neutral-sentiment"><img src="http://iibh.apphb.com/Content/images/scores/3.png" /></button>
-			<button class="btn tool-info" type="button" title="Positive" id="positive-sentiment"><img src="http://iibh.apphb.com/Content/images/scores/1.png" /></button>
+			<button class="btn btn-primary" type="button" onclick="blah('$all');">All</button>
+			<button id="negativeButton" class="btn tool-info" type="button" title="Negative" id="negative-sentiment" onclick="blah('$negativeButton');"><img src="http://iibh.apphb.com/Content/images/scores/4.png" /></button>
+			<button id="neutralButton" class="btn tool-info" type="button" title="Neutral" id="neutral-sentiment" onclick="blah('$neutralButton');"><img src="http://iibh.apphb.com/Content/images/scores/3.png" /></button>
+			<button id="positiveButton" class="btn tool-info" type="button" title="Positive" id="positive-sentiment" onclick="blah('$positiveButton');"><img src="http://iibh.apphb.com/Content/images/scores/1.png" /></button>
 		</div>
 	</div>
 	
@@ -83,7 +84,8 @@
 		<h3>Description:</h3>
 		<div class="span10">
 			<p>
-				Our scatter visualization displays tweets as moving circles across the space.
+				Our scatter visualization displays tweets as moving circles across the space. The color of the circles
+				correspond to the sentiment, in which they can either signify a positive, neutral, or negative emotion.
 			</p>
 		</div>
 	</div>
