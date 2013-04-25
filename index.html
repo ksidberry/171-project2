@@ -13,41 +13,30 @@
 		<div class="navbar-inner">
 			<a class="brand" href="index.html">Weatherly D3pression</a>
 			<ul class="nav">
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						TwitterSphere
-						<b class="caret"></b>
-					</a>
-					<ul class="dropdown-menu">
-						<li><a href="scatter.html">Scatter</a></li>
-						<li><a href="tweets.html">WordCloud</a></li>
-					</ul>
-				</li>
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						Metrics
-						<b class="caret"></b>
-					</a>
-					<ul class="dropdown-menu">
-						<li><a href="histogram.html">Sentiment Histogram</a></li>
-						<li><a href="weather.html">Weather Donuts</a></li>
-						<li><a href="map.html">Tweet Map</a></li>
-					</ul>
-				</li>
+				<li><a href="explore.html">Explore</a></li>
 				<li><a href="screencast.html">Screencast</a></li>
 				<li><a href="about.html">About</a></li>
 			</ul>
 		</div>
 	</div>
 	
-	<div class="hero-unit span10 offset1" style="margin-top: 30px;">
-  		<h1>Welcome to Weatherly D3pression</h1>
- 		<p style="margin-top: 20px;">
-    		<a class="btn btn-primary btn-large" href="scatter.html">
-      			Explore
-    		</a>
-  		</p>
-</div>
+	<div id="storyNav" class="row">
+		<div class="span10 offset1 well">
+			<div class="btn-toolbar">
+				<div id="story_select" class="btn-group">
+					<a id="all" class="btn btn-large active">All</a>
+					<a id="year" class="btn btn-large">< 30 degrees</a>
+					<a class="btn btn-large">30 - 60 degrees</a>
+					<a id="exploreBtn" href="explore.html" class="btn btn-large btn-primary">Explore</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div id="storyContainer" class="offset1"></div>
+		<div id="vis" class="offset1"></div>
+	</div>
 
 	<!-- javascript -->
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
@@ -58,6 +47,22 @@
 	<script src="http://datamaps.github.com/scripts/datamaps-all.js"></script>
 	<script src="assets/js/bootstrap.min.js"></script>
 	<script src="assets/js/main.js"></script>
+	<script src="assets/js/CustomTooltip.js"></script>
+	<script src="assets/js/coffee-script.js"></script>
+	<script type="text/coffeescript" src="assets/js/vis.coffee"></script>
+	<script>	
+		$(document).ready(function() {
+			$('#story_select a').click(function() {
+				if ($(this).attr('id') != "exploreBtn"){
+					var view_type = $(this).attr('id');
+					$('#story_select a').removeClass('active');
+					$(this).toggleClass('active');
+					toggle_view(view_type);
+					return false;
+				}
+			});
+		});
+	</script>
 </body>
 
 </html>
