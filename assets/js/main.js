@@ -419,8 +419,41 @@ function mapObject (longi, lat, radius, screenName, text, location, temp, fillKe
 	buildScatterPlot(low);
 }*/
 
-function addCommas(nStr)
-{
+function weatherPick(str, wind){
+	if (wind > 20) {
+		return "Windy";
+	} 
+	else if (str == "0"){
+		return "Sunny";
+	}
+	else if (str == "100000" || str == "110000" || str == "100010" || str == "101000"){
+		return "Foggy";
+	}
+	else if (str == "1000"){
+		return "Snowy";
+	}
+	else if (str == "10000" || str == "11000" || str == "10010"){
+		return "Rainy";
+	}
+	return "sun"
+}
+
+function sentimentPick(sentiment){
+	if (sentiment == 0){
+		return "Neutral";
+	}
+	else if (sentiment > 0){
+		return "Happy"
+	}
+	else if (sentiment < 0){
+		return "Sad"
+	}
+	else {
+		return "Neutral"
+	}
+}
+
+function addCommas(nStr){
 	nStr += '';
 	x = nStr.split('.');
 	x1 = x[0];

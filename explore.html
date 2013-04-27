@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- styles -->
+	<link href="assets/css/bootstrap.css" rel="stylesheet">
+	<link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="assets/css/styles.css" rel="stylesheet">
+</head>
+
+<body>
+	<!-- Navbar -->
+	<div class="navbar navbar-inverse navbar-static-top">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">Weatherly D3pression</a>
+			<ul class="nav">
+				<li class="active"><a href="explore.html">Explore</a></li>
+				<li><a href="screencast.html">Screencast</a></li>
+				<li><a href="about.html">About</a></li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div id="scatterContainer" class="offset1"></div>
+		<div id="vis" class="offset1"></div>
+	</div>
+	
+	<div id="scatterFilter" class="row well well-large">
+		<div class="span3 attr_select" style="padding-left: 30px">
+			<p>Temperature:</p>
+			<a id="tempAll" class="btn tool-info btn-primary active allBtn">All</a>
+			<a id="low" class="btn tool-info">< 30 degrees</a>
+			<a id="mid" class="btn tool-info">30 - 60 degrees</a>
+			<a id="high" class="btn tool-info">> 60 degrees</a>
+		</div>
+		<div class="span3 attr_select">
+			<p>Weather:</p>
+			<a id="weatherAll" class="btn btn-primary active allBtn">All</a>
+			<a id="sunnyBtn" class="btn tool-info">Sunny</a>
+			<a id="foggyBtn" class="btn tool-info">Foggy</a>
+			<a id="rainyBtn" class="btn tool-info">Rainy</a>
+			<a id="snowyBtn" class="btn tool-info">Snowy</a>
+			<a id="windyBtn" class="btn tool-info" title="Windspeed over 20 knots">Windy</a>
+		</div>
+		<div class="span3 attr_select">
+			<p>Sentiment:</p>
+			<a id="sentimentAll" class="btn btn-primary active allBtn">All</a>
+			<a id="sadBtn" class="btn tool-info" title="Negative"><img src="http://iibh.apphb.com/Content/images/scores/4.png" /></a>
+			<a id="neutralBtn" class="btn tool-info" title="Neutral"><img src="http://iibh.apphb.com/Content/images/scores/3.png" /></a>
+			<a id="happyBtn" class="btn tool-info" title="Positive"><img src="http://iibh.apphb.com/Content/images/scores/1.png" /></a>
+		</div>
+		<div id="filterMapContainer" class="span4"></div>
+	</div>
+
+	<!-- javascript -->
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="http://d3js.org/topojson.v0.min.js"></script>
+	<script src="http://d3js.org/queue.v1.min.js"></script>
+	<script src="http://www.jasondavies.com/wordcloud/d3.layout.cloud.js"></script>
+	<script src="http://datamaps.github.com/scripts/datamaps-all.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
+	<script src="assets/js/main.js"></script>
+	<script src="assets/js/CustomTooltip.js"></script>
+	<script src="assets/js/coffee-script.js"></script>
+	<script type="text/coffeescript" src="assets/js/vis.coffee"></script>
+	<script>
+		$(document).ready(function() {
+			$('.attr_select a').click(function() {
+				// need to preserve active status for different groups of buttons
+				var filter = $(this).attr('id');
+				$('.attr_select a').removeClass('active');
+				$(this).toggleClass('active');
+				toggle_filter(filter);
+				return false;
+			});
+			$(".allBtn").click(function() {
+				// if any button than all active, then initiate then filter
+				return false;
+			});
+		});
+	</script>
+</body>
+
+</html>

@@ -86,3 +86,7 @@ font-weight: bold;
 	font-size: 12px;
 	z-index: 10;
 }
+
+.sentiment {
+font-size: 21px;
+fill: #aaa;
