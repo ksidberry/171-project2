@@ -28,14 +28,14 @@
 	<div id="scatterFilter" class="row well well-large">
 		<div id="temperatureBtns" class="span3 attr_select" data-target="tempStatus" style="padding-left: 30px">
 			<p>Temperature:</p>
-			<a id="tempAll" class="btn tool-info btn-primary active allBtn">All</a>
+			<a id="tempAll" class="btn tool-info btn-primary active allBtn" data-target="all">All</a>
 			<a id="low" class="btn tool-info">< 30 degrees</a>
 			<a id="mid" class="btn tool-info">30 - 60 degrees</a>
 			<a id="high" class="btn tool-info">> 60 degrees</a>
 		</div>
 		<div id="weatherBtns" class="span3 attr_select" data-target="weather">
 			<p>Weather:</p>
-			<a id="weatherAll" class="btn btn-primary active allBtn">All</a>
+			<a id="weatherAll" class="btn btn-primary active allBtn" data-target="all">All</a>
 			<a id="Sunny" class="btn tool-info">Sunny</a>
 			<a id="Foggy" class="btn tool-info">Foggy</a>
 			<a id="Rainy" class="btn tool-info">Rainy</a>
@@ -44,7 +44,7 @@
 		</div>
 		<div id="sentimentBtns" class="span3 attr_select" data-target="sentiment">
 			<p>Sentiment:</p>
-			<a id="sentimentAll" class="btn btn-primary active allBtn">All</a>
+			<a id="sentimentAll" class="btn btn-primary active allBtn" data-target="all">All</a>
 			<a id="Sad" class="btn tool-info" title="Negative"><img src="http://iibh.apphb.com/Content/images/scores/4.png" /></a>
 			<a id="Neutral" class="btn tool-info" title="Neutral"><img src="http://iibh.apphb.com/Content/images/scores/3.png" /></a>
 			<a id="Happy" class="btn tool-info" title="Positive"><img src="http://iibh.apphb.com/Content/images/scores/1.png" /></a>
@@ -80,10 +80,6 @@
 				use_filters(filters);
 				return false;
 			});
-			/*$(".allBtn").click(function() {
-				// if any button than all active, then initiate then filter
-				return false;
-			});*/
 			var GetDiscreteFilters = function () {
                 var filters = [];
                 $('.attr_select').each(function (index, element) {
@@ -91,6 +87,13 @@
                     var removeValues = {};
                     $(this).find('a:not(.active)').each(function (innerIndex, innerElement) {
                         removeValues[$(this).attr("id")] = true;
+                    });
+                    $(this).find('.active').each(function (innerIndex, innerElement){
+						if ($(this).attr("data-target") == "all"){
+							$(this).parent().children("a:not(.active)").each(function (innerIndex, innerElement) {
+								removeValues[$(this).attr("id")] = false;
+							});
+						}
                     });
                     var toAdd = {
                         target: target,

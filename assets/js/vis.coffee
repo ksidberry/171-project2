@@ -30,7 +30,7 @@ class BubbleChart
     @circles = null
     @fill_color = d3.scale.ordinal()
       .domain(["Rainy", "Windy", "Snowy", "Sunny", "Foggy"])
-      .range(["#55BB93", "#990033", "#C33C00", "#C37C00", "#94BE84"])
+      .range(["#5893C8", "#AA92C2", "#A0E0FF", "#FCE897", "#A09EA2"])
 	
 	# use the max total_amount in the data as the max in the scale's domain
     max_amount = d3.max(@data, (d) -> parseInt(d.TuesdayTemp) / 5)
@@ -202,16 +202,12 @@ class BubbleChart
 
   use_filters: (filters) =>
     @nodes.forEach (d) =>
-      #d.radius = d.temp / 5
+      d.radius = d.temp / 5
       filters.discrete.forEach (filter) =>
-        d.radius = d.temp / 5
+        #d.radius = d.temp / 5
         value = d[filter.target]
-        console.log(filter.target)
-        console.log(value)
         if (filter.removeValues[value])
           d.radius = @default_radius
-          console.log(d.radius)
-      #console.log(d.radius)
     @do_filter()
 
   do_filter: () =>
@@ -230,6 +226,7 @@ $ ->
   root.display_all = () =>
     chart.display_group_all()
   root.use_filters = (filters) =>
+    chart.initiate_display()
     chart.use_filters(filters)
 
   d3.csv "data/final/test3.csv", render_vis
