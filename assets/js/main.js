@@ -13,8 +13,8 @@ window.onload = function() {
         var t = d3.selectAll("circle").data().filter(function(d, i){ 
           return d.sentiment > -10 
         }); 
-        console.log(t);
-        console.log(t.length); 
+        //console.log(t);
+        //console.log(t.length); 
         t.exit().transition().delay(2000).remove();
     });
 
@@ -49,11 +49,8 @@ window.onload = function() {
 	// activate tooltips
 	$('.tool-info').tooltip();
 	
-	buildScatterPlot(temps);
-	buildBarChart(bars);
-	buildMapChart(bubbles);
-	buildPie();
-	buildCloud();
+	//buildScatterPlot(temps);
+	buildFilterMap();
 
 }
 
@@ -123,84 +120,6 @@ function getAllTweets() {
     });
     return tweetwords;
 }
-
-/*function buildChoropleth() {
-$.getJSON('data/tweets_with_temperature/TuesdayData.json', function(data) {
-
-var map = new Map({
-      scope: 'usa',
-      el: $('#choroplethContainer'),
-      geography_config: { 
-        highlightBorderColor: 'steelblue',
-        highlightOnHover: true,
-        popupTemplate: _.template('<div class="hoverinfo"><strong><%= geography.properties.name %></strong> <% if (data.electoralVotes) { %><hr/>  Electoral Votes: <%= data.electoralVotes %> <% } %></div>')
-      },
-      
-      fills: {
-        'tier1': '#CC4731',
-        'tier2': '#306596',
-        'tier3': '#667FAF',
-        'tier4': '#A9C0DE',
-        defaultFill: '#999999'
-      },
-      data: {
-		"AZ": {
-            "fillKey": "REP",
-            "electoralVotes": 5
-        },
-        "AZ": {
-            "fillKey": "DEM",
-            "electoralVotes": 10
-        }
-      }
-    });
-
-   map.render();
-
-});
-}*/
-
-/*function buildSymbol () {
-	// The radius scale for the centroids.
-	var r = d3.scale.sqrt()
-    	.domain([0, 1e6])
-    	.range([0, 10]);
-
-	// Our projection.
-	var xy = d3.geo.albersUsa();
-
-	var svg = d3.select("#symbolContainer")
-		.append("svg:svg")
-		.attr("width", width)
-		.attr("height", height);
-	
-	svg.append("svg:g").attr("id", "states");
-	svg.append("svg:g").attr("id", "state-centroids");
-
-	d3.json("data/map.json", function(collection) {
-		svg.select("#states")
-    		.selectAll("path")
-      			.data(collection.features)
-   		.enter().append("svg:path")
-      		.attr("d", d3.geo.path().projection(xy));
-	});
-
-	d3.json("data/centroid.json", function(collection) {
-  		svg.select("#state-centroids")
-    		.selectAll("circle")
-      			.data(collection.features
-      			.sort(function(a, b) { return b.properties.population - a.properties.population; }))
-    		.enter().append("svg:circle")
-      			.attr("transform", function(d) { return "translate(" + xy(d.geometry.coordinates) + ")"; })
-      			.attr("r", 0)
-    	.transition()
-      		.duration(1000)
-      		.delay(function(d, i) { return i * 50; })
-      		.attr("r", function(d) { return r(d.properties.population); });
-	});
-	
-}*/
-
 
 function buildScatterPlot(temps) {
       /*$.ajax({
@@ -287,163 +206,71 @@ function buildScatterPlot(temps) {
 
 }
 
-/*function buildCloud() {
-  var fill = d3.scale.category20();
-  d3.layout.cloud().size([width*2, height*2])
-      .words(getTweets().map(function(d) {
-        return {text: d, size: 10 + Math.random() * 90};
-      }))
-      .rotate(function() { return ~~(Math.random() * 2) * 90; })
-      .font("Impact")
-      .fontSize(function(d) { return d.size; })
-      .on("end", draw)
-      .start();
+function buildFilterMap() {
+	var width = 350,
+		height = 200,
+		centered;
 
-  function draw(words) {
-    d3.select("#cloudContainer").append("svg")
-        .attr("width", width)
-        .attr("height", height)
-      .append("g")
-        .attr("transform", "translate(150,150)")
-      .selectAll("text")
-        .data(words)
-      .enter().append("text")
-        .style("font-size", function(d) { return d.size + "px"; })
-        .style("font-family", "Impact")
-        .style("fill", function(d, i) { return fill(i); })
-        .attr("text-anchor", "middle")
-        .attr("transform", function(d) {
-          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-        })
-        .text(function(d) { return d.text; });
-  }
-
-}*/
-
-/*function buildPie() {
+	var path = d3.geo.path();
 	
-	// fog, snow, rain, wind, sun, unknown
-	var count = [0, 0, 0, 0, 0, 0];	
+	var svg = d3.select("#filterMapContainer").append("svg")
+		.attr("width", width)
+		.attr("height", height);
 	
-	var sequence = {
-		"fog": {
-			"color": "#FFCCFF",
-			"id": "#foggy-donut",
-		},
-		"snow": {
-			"color": "#CCFFFF",
-			"id": "#snowy-donut",
-		},
-		"rain": {
-			"color": "#3333FF",
-			"id": "#rainy-donut",
-		},
-		"wind": {
-			"color": "#CCFF99",
-			"id": "#windy-donut",
-		},
-		"sun": {
-			"color": "#FF9900",
-			"id": "#sunny-donut",
-		},
-		"unknown": {
-			"color": "#999999",
-			"id": "#unknown-donut"
-		}
-	}
-		
-	$.getJSON("data/final/TuesdayDataTiny.json", function(data) {
-		$.each(data, function(key, val){
-			//console.log(data[key]["TuesdayConditions"]);
-			var k = data[key]["TuesdayConditions"];
-			var m = data[key]["TuesdayWind"];
-			if (k == 100000 || k == 110000 || k == 100010 || k == 101000){
-				count[0] = count[0] + 1;
-			}
-			else if (k == 1000){
-				count[1] = count[1] + 1;
-			}
-			else if (k == 10000 || k == 11000 || k == 10010){
-				count[2] = count[2] + 1;
-			}
-			else if (m > 20){
-				count[3] = count[3] + 1;
-			}
-			else if (k == 0){
-				count[4] = count[4] + 1;
-			}
-			else {
-				count[5] =  count[5] + 1;
-			}
-		});
-		var total = count[0] + count[1] + count[2] + count[3] + count[4] + count[5];
-		var i = 0;
-		for (var key in sequence){
-			var data = [];
-			var num = (count[i] / total) * 100;
-			var percent = num.toFixed(2);
-			var weather = new pieObject(key, count[i], percent.toString() + " %", total);
-			var everyone = new pieObject("everyone", total - count[i], "", "");
-			data.push(weather);
-			data.push(everyone)
-			addDonut(data, sequence[key]["color"], sequence[key]["id"]);
-			i = i + 1;
-		}
+	var tooltip = d3.select("#filterMapContainer")
+		.append("div")
+		.style("position", "absolute")
+		.style("z-index", "10")
+		.style("visibility", "hidden")
+		.attr("id", "mapTooltip")
+		.text("a simple tooltip");
+
+	svg.append("rect")
+		.attr("class", "background")
+		.attr("width", width)
+		.attr("height", height)
+		.on("click", click)
+
+	var g = svg.append("g")
+		.attr("id", "states");
+
+	d3.json("data/us-states.json", function(json) {
+		g.selectAll("path")
+			.data(json.features)
+		.enter().append("path")
+			.attr("d", path)
+			.attr("transform", "scale(.4, .4)")
+	  		.on("click", click)
+	  		.on("mouseover", function(d){return tooltip.style("visibility", "visible").text(d.properties.name);})
+			.on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+			.on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 	});
 
-}*/
+	function click(d) {
+		var x, y, k;
 
-function buildBarChart(values){
-	var margin = {top: 10, right: 30, bottom: 31, left: 30},
-		w = width - margin.left - margin.right,
-		h = height - margin.top - margin.bottom;
+		if (d && centered !== d) {
+			var centroid = path.centroid(d);
+			x = .4 * centroid[0];
+			y = .4 * centroid[1];
+			k = 4;
+			centered = d;
+		} else {
+			x = width / 2;
+			y = height / 2;
+			k = 1;
+			centered = null;
+		}
 
-	var x = d3.scale.linear()
-		.domain([-20, 20])
-		.range([0, w]);
+		g.selectAll("path")
+			.classed("active", centered && function(d) { return d === centered; });
 
-	// Generate a histogram using twenty uniformly-spaced bins.
-	var data = d3.layout.histogram()
-		.bins(x.ticks(10))
-		(values);
-
-	var y = d3.scale.linear()
-		.domain([0, d3.max(data, function(d) { return d.y; })])
-		.range([h, 0]);
-
-	var xAxis = d3.svg.axis()
-		.scale(x)
-		.orient("bottom");
-
-	var svg = d3.select("#sentiment-container").append("svg")
-		.attr("width", w + margin.left + margin.right)
-		.attr("height", h + margin.top + margin.bottom)
-	  .append("g")
-		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-	var bar = svg.selectAll(".bar")
-		.data(data)
-	  .enter().append("g")
-		.attr("class", "bar")
-		.attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
-
-	bar.append("rect")
-		.attr("x", 1)
-		.attr("width", 142.5)
-		.attr("height", function(d) { return h - y(d.y); });
-
-	bar.append("text")
-		.attr("dy", ".75em")
-		.attr("y", 6)
-		.attr("x", 142.5 / 2)
-		.attr("text-anchor", "middle")
-		.text(function(d) { return d.y;});
-
-	svg.append("g")
-		.attr("class", "x axis")
-		.attr("transform", "translate(0," + h + ")")
-		.call(xAxis);
-
+		g.transition()
+			.duration(1000)
+			.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+			.style("stroke-width", 1.5 / k + "px");
+	}
+	
 }
 
 function buildMapChart(tweets){		
@@ -480,54 +307,6 @@ function buildMapChart(tweets){
     });
 	
 }
-
-/*function addDonut(input, color, id) {
-	var width = 200,
-		height = 200,
-		radius = Math.min(width, height) / 2;
-
-	var color = d3.scale.ordinal()
-		.range([color, "#000000"]);
-
-	var arc = d3.svg.arc()
-		.outerRadius(radius - 10)
-		.innerRadius(radius - 30);
-
-	var pie = d3.layout.pie()
-		.sort(null)
-		.value(function(d) { return d.count; });
-
-	var svg = d3.select(id).append("svg")
-		.attr("width", width)
-		.attr("height", height)
-	.append("g")
-    	.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-	input.forEach(function(d) {
-		d.count = +d.count;
-	});
-
-	var g = svg.selectAll(".arc")
-		.data(pie(input))
-	.enter().append("g")
-		.attr("class", "arc");
-
-	g.append("path")
-		.attr("d", arc)
-		.style("fill", function(d) { return color(d.data.weather); });
-	
-	g.append("text")
-		.style("text-anchor", "middle")
-		.style("font-size", "25px")
-		.text(function(d) { return d.data.percentage; })
-		.attr("transform", "translate(0,8)");
-		
- 	d3.select(id + "-text").append('p')
- 		.data(pie(input))
- 		.text(function(d) { return "There have been " + d.data.count + " occurrences of " + d.data.weather + " out of " + d.data.total; })
- 			.style("color", color)
- 			.attr("class", "weather-text");
-}*/
 
 function sentimentColoring(sentiment) {
 	if (sentiment < -10){
@@ -566,7 +345,7 @@ function mapObject (longi, lat, radius, screenName, text, location, temp, fillKe
 	this.location = location;
 }
 
-function blah(id) {
+/*function blah(id) {
 	$("#scatterContainer").empty();
 	var low = [];
 	$.ajax({
@@ -638,4 +417,63 @@ function blah(id) {
 		}
 	});
 	buildScatterPlot(low);
+}*/
+
+function weatherPick(str, wind){
+	if (wind > 20) {
+		return "Windy";
+	} 
+	else if (str == "0"){
+		return "Sunny";
+	}
+	else if (str == "100000" || str == "110000" || str == "100010" || str == "101000"){
+		return "Foggy";
+	}
+	else if (str == "1000"){
+		return "Snowy";
+	}
+	else if (str == "10000" || str == "11000" || str == "10010"){
+		return "Rainy";
+	}
+	return "Sunny"
+}
+
+function sentimentPick(sentiment){
+	if (sentiment == 0){
+		return "Neutral";
+	}
+	else if (sentiment > 0){
+		return "Happy"
+	}
+	else if (sentiment < 0){
+		return "Sad"
+	}
+	else {
+		return "Neutral"
+	}
+}
+
+function tempStatus(temp){
+	if (temp < 30){
+		return "low";	
+	}
+	else if (temp >= 30 && temp <= 60){
+		return "mid";
+	}
+	else if (temp > 60){
+		return "high";
+	}
+	return "mid";
+}
+
+function addCommas(nStr){
+	nStr += '';
+	x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	}
+	return x1 + x2;
 }
