@@ -261,7 +261,7 @@ function buildFilterMap() {
 			k = 1;
 			centered = null;
 		}
-
+		//console.log(d);
 		g.selectAll("path")
 			.classed("active", centered && function(d) { return d === centered; });
 

@@ -58,6 +58,7 @@ class BubbleChart
         sentiment: sentimentPick(parseInt(d.sentiment))
         weather: weatherPick(d.TuesdayConditions, parseInt(d.TuesdayWind))
         location: d.location
+        state: d.abbr
         x: Math.random() * @width
         y: Math.random() * @height
       }
