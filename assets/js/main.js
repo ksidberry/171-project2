@@ -241,7 +241,7 @@ function buildFilterMap() {
 			.attr("d", path)
 			.attr("transform", "scale(.4, .4)")
 	  		.on("click", click)
-	  		.on("mouseover", function(d){return tooltip.style("visibility", "visible").text(d.properties.name);})
+	  		.on("mouseover", function(d){return tooltip.style("visibility", "visible").text(d.properties.abbr);})
 			.on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
 			.on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 	});
