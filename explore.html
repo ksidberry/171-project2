@@ -26,28 +26,28 @@
 	</div>
 	
 	<div id="scatterFilter" class="row well well-large">
-		<div class="span3 attr_select" style="padding-left: 30px">
+		<div id="temperatureBtns" class="span3 attr_select" data-target="tempStatus" style="padding-left: 30px">
 			<p>Temperature:</p>
 			<a id="tempAll" class="btn tool-info btn-primary active allBtn">All</a>
 			<a id="low" class="btn tool-info">< 30 degrees</a>
 			<a id="mid" class="btn tool-info">30 - 60 degrees</a>
 			<a id="high" class="btn tool-info">> 60 degrees</a>
 		</div>
-		<div class="span3 attr_select">
+		<div id="weatherBtns" class="span3 attr_select" data-target="weather">
 			<p>Weather:</p>
 			<a id="weatherAll" class="btn btn-primary active allBtn">All</a>
-			<a id="sunnyBtn" class="btn tool-info">Sunny</a>
-			<a id="foggyBtn" class="btn tool-info">Foggy</a>
-			<a id="rainyBtn" class="btn tool-info">Rainy</a>
-			<a id="snowyBtn" class="btn tool-info">Snowy</a>
-			<a id="windyBtn" class="btn tool-info" title="Windspeed over 20 knots">Windy</a>
+			<a id="Sunny" class="btn tool-info">Sunny</a>
+			<a id="Foggy" class="btn tool-info">Foggy</a>
+			<a id="Rainy" class="btn tool-info">Rainy</a>
+			<a id="Snowy" class="btn tool-info">Snowy</a>
+			<a id="Windy" class="btn tool-info" title="Windspeed over 20 knots">Windy</a>
 		</div>
-		<div class="span3 attr_select">
+		<div id="sentimentBtns" class="span3 attr_select" data-target="sentiment">
 			<p>Sentiment:</p>
 			<a id="sentimentAll" class="btn btn-primary active allBtn">All</a>
-			<a id="sadBtn" class="btn tool-info" title="Negative"><img src="http://iibh.apphb.com/Content/images/scores/4.png" /></a>
-			<a id="neutralBtn" class="btn tool-info" title="Neutral"><img src="http://iibh.apphb.com/Content/images/scores/3.png" /></a>
-			<a id="happyBtn" class="btn tool-info" title="Positive"><img src="http://iibh.apphb.com/Content/images/scores/1.png" /></a>
+			<a id="Sad" class="btn tool-info" title="Negative"><img src="http://iibh.apphb.com/Content/images/scores/4.png" /></a>
+			<a id="Neutral" class="btn tool-info" title="Neutral"><img src="http://iibh.apphb.com/Content/images/scores/3.png" /></a>
+			<a id="Happy" class="btn tool-info" title="Positive"><img src="http://iibh.apphb.com/Content/images/scores/1.png" /></a>
 		</div>
 		<div id="filterMapContainer" class="span4"></div>
 	</div>
@@ -67,17 +67,39 @@
 	<script>
 		$(document).ready(function() {
 			$('.attr_select a').click(function() {
-				// need to preserve active status for different groups of buttons
-				var filter = $(this).attr('id');
-				$('.attr_select a').removeClass('active');
+				// need to determine what buttons are active and filter from there
+				//var filter = $(this).attr('id');
+				var id = $(this).parent().attr("id");
+				$("#"+ id + " a").removeClass('active');
 				$(this).toggleClass('active');
-				toggle_filter(filter);
+				var filters = {
+                    discrete: GetDiscreteFilters(),
+                    numeric: [] // numeric not done yet!
+                };
+				console.log(filters);
+				use_filters(filters);
 				return false;
 			});
-			$(".allBtn").click(function() {
+			/*$(".allBtn").click(function() {
 				// if any button than all active, then initiate then filter
 				return false;
-			});
+			});*/
+			var GetDiscreteFilters = function () {
+                var filters = [];
+                $('.attr_select').each(function (index, element) {
+                    var target = $(this).attr('data-target');
+                    var removeValues = {};
+                    $(this).find('a:not(.active)').each(function (innerIndex, innerElement) {
+                        removeValues[$(this).attr("id")] = true;
+                    });
+                    var toAdd = {
+                        target: target,
+                        removeValues: removeValues
+                    };
+                    filters.push(toAdd);
+                });
+                return filters;
+            };
 		});
 	</script>
 </body>

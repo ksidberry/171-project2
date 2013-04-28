@@ -435,7 +435,7 @@ function weatherPick(str, wind){
 	else if (str == "10000" || str == "11000" || str == "10010"){
 		return "Rainy";
 	}
-	return "sun"
+	return "Sunny"
 }
 
 function sentimentPick(sentiment){
@@ -451,6 +451,19 @@ function sentimentPick(sentiment){
 	else {
 		return "Neutral"
 	}
+}
+
+function tempStatus(temp){
+	if (temp < 30){
+		return "low";	
+	}
+	else if (temp >= 30 && temp <= 60){
+		return "mid";
+	}
+	else if (temp > 60){
+		return "high";
+	}
+	return "mid";
 }
 
 function addCommas(nStr){

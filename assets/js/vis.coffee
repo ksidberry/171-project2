@@ -4,6 +4,7 @@ class BubbleChart
     @width = 1200
     @height = 500
     @default_radius = 0
+    @what = 0
 
     @tooltip = CustomTooltip("my_tooltip", 240)
 
@@ -29,7 +30,7 @@ class BubbleChart
     @circles = null
     @fill_color = d3.scale.ordinal()
       .domain(["Rainy", "Windy", "Snowy", "Sunny", "Foggy"])
-      .range(["white", "black", "red", "blue", "green"])
+      .range(["#55BB93", "#990033", "#C33C00", "#C37C00", "#94BE84"])
 	
 	# use the max total_amount in the data as the max in the scale's domain
     max_amount = d3.max(@data, (d) -> parseInt(d.TuesdayTemp) / 5)
@@ -50,6 +51,7 @@ class BubbleChart
         radius: parseInt(d.TuesdayTemp) / 5
         value: 99
         temp: parseInt(d.TuesdayTemp)
+        tempStatus: tempStatus(parseInt(d.TuesdayTemp))
         wind: d.TuesdayWind
         text: d.text
         name: d.screenName
@@ -198,33 +200,23 @@ class BubbleChart
     d3.select(element).attr("stroke", "#404040")
     @tooltip.hideTooltip()
 
-  use_filters: (param, category) =>
-    if (category == "sentiment")
-      @nodes.forEach (d) =>
-        if (d.sentiment != param)
-          d.radius = @default_radius
-        else
-          d.radius = d.temp / 5
-    else if (category == "weather")
-      @nodes.forEach (d) =>
-        if (d.weather != param)
-          d.radius = @default_radius
-        else
-          d.radius = d.temp / 5
-    @do_filter()
-  
-  temp_filter: (low, high) =>
+  use_filters: (filters) =>
     @nodes.forEach (d) =>
-      if (d.temp > low && d.temp < high)
-      	d.radius = d.temp / 5
-      else
-        d.radius = @default_radius
+      #d.radius = d.temp / 5
+      filters.discrete.forEach (filter) =>
+        d.radius = d.temp / 5
+        value = d[filter.target]
+        console.log(filter.target)
+        console.log(value)
+        if (filter.removeValues[value])
+          d.radius = @default_radius
+          console.log(d.radius)
+      #console.log(d.radius)
     @do_filter()
-  	
 
   do_filter: () =>
     @force.start()
-    @circles.transition().duration(1000).attr("r", (d) -> d.radius)
+    @circles.transition().duration(2000).attr("r", (d) -> d.radius)
 
 root = exports ? this
 
@@ -237,33 +229,7 @@ $ ->
     chart.initiate_display()
   root.display_all = () =>
     chart.display_group_all()
-  root.toggle_filter = (filter) =>
-    if (filter == "sadBtn")
-      chart.sentiment_filter("Sad")
-    else if (filter == "happyBtn")
-      chart.sentiment_filter("Happy")
-    else if (filter == "neutralBtn")
-      chart.sentiment_filter("Neutral")
-    
-    else if (filter == "sunnyBtn")
-      chart.use_filters("Sunny", "weather")
-    else if (filter == "windyBtn")
-      chart.use_filters("Windy", "weather")
-    else if (filter == "foggyBtn")
-      chart.use_filters("Foggy", "weather")
-    else if (filter == "rainyBtn")
-      chart.use_filters("Rainy", "weather")
-    else if (filter == "snowyBtn")
-      chart.use_filters("Snowy", "weather")
-    
-    else if (filter == "low")
-      chart.temp_filter(-50 , 30)
-    else if (filter == "mid")
-      chart.temp_filter(30, 60)
-    else if (filter == "high")
-      chart.temp_filter(60, 120)
-  
-  root.re_initiate = () =>
-    chart.initiate_display()
+  root.use_filters = (filters) =>
+    chart.use_filters(filters)
 
-  d3.csv "data/final/test2.csv", render_vis
+  d3.csv "data/final/test3.csv", render_vis
